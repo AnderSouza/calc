@@ -65,95 +65,112 @@ class Formula {
     return element;
   };
 
-  // 1º Potências e raízes
-  // 2º Multiplicações e divisões
-  // 3º Adições e subtrações
+  // Continue by verifying the validity of the 
+  // evaluation logic.
   evaluate = () => {
-    let result = 0;
+    let elements = this.elements;
+    elements = this.findAndExecuteAllOperationsOfTypes(
+      [OPERATIONS.POTENCY],
+      this.elements
+    );
+    elements = this.findAndExecuteAllOperationsOfTypes(
+      [OPERATIONS.MULTIPLICATION, OPERATIONS.DIVISION],
+      this.elements
+    );
+    elements = this.findAndExecuteAllOperationsOfTypes(
+      [OPERATIONS.ADDITION, OPERATIONS.SUBTRACTION],
+      this.elements
+    );
 
-    let elementsCopy = _.cloneDeep(this.elements);
-
-    elementsCopy.map(this.evaluatePotency);
-    elementsCopy.map(this.evaluateMultiplicationAndDivision);
-    elementsCopy.map(this.evaluateAdditionAndSubtraction);
-
-    return result;
+    return elements.pop().evaluate();
   };
 
-  evaluatePotency = (element, index, array) => {
-    if (index === 0) {
-      return element;
-    } else if (
-      element.type === ELEMENT_TYPES.OPERATION &&
-      element.type === OPERATIONS.POTENCY
-    ) {
-      let firstNumber = array[index - 1];
-      let secondNumber = array[index + 1];
-      let result = executeMathematicalOperation(
-        firstNumber,
-        secondNumber,
-        OPERATIONS.POTENCY
-      );
-      array[index - 1] = result;
-      array.splice(index, 2);
+  findAndExecuteAllOperationsOfTypes = (operationTypes, elements) => {
+    elements = _.cloneDeep(elements);
+
+    let operationIndex = null;
+    let firstNumber = null;
+    let secondNumber = null;
+    let operation = null;
+
+    while (thereAreRemainingOperationsOfTypes(operationTypes, elements)) {
+      operationIndex = null;
+      firstNumber = null;
+      secondNumber = null;
+      operation = null;
+
+      for (let x = 0; x < elements.length; x++) {
+        if (
+          elements[x].type === ELEMENT_TYPES.OPERATION &&
+          operationTypes.includes(elements[x].value)
+        ) {
+          operation = elements[x];
+          operationIndex = x;
+
+          // In case these positions don't contain a number,
+          // an exception should be thrown.
+          firstNumber = elements[operationIndex - 1];
+          secondNumber = elements[operationIndex + 1];
+          break;
+        }
+      }
+
+      if (firstNumber !== null && secondNumber !== null && operation !== null) {
+        elements[operationIndex - 1] = this.executeOperation(
+          operation,
+          firstNumber,
+          secondNumber
+        );
+        elements.splice(operationIndex, 2);
+      }
     }
+
+    return elements;
   };
 
-  // Continuar do evaluatePotency
-  evaluatePotency = (element, index, array) => {
-    if (index === 0) {
-      return element;
-    } else if (
-      element.type === ELEMENT_TYPES.OPERATION &&
-      element.type === OPERATIONS.POTENCY
-    ) {
-      let firstNumber = array[index - 1];
-      let secondNumber = array[index + 1];
-      let result = executeMathematicalOperation(
-        firstNumber,
-        secondNumber,
-        OPERATIONS.POTENCY
-      );
-      array[index - 1] = result;
-      array.splice(index, 2);
-    }
-  };
-
-  executeMathematicalOperation = (firstElement, secondElement, operation) => {
+  executeOperation = (operation, firstNumber, secondNumber) => {
     switch (operation) {
-      case OPERATIONS.ADDITION:
-        return firstElement + secondElement;
-      case OPERATIONS.SUBTRACTION:
-        return firstElement - secondElement;
-      case OPERATIONS.MULTIPLICATION:
-        return firstElement * secondElement;
-      case OPERATIONS.DIVISION:
-        return firstElement / secondElement;
       case OPERATIONS.POTENCY:
-        return Math.pow(firstElement, secondElement);
+        return this.evaluatePotency(firstNumber, secondNumber);
+      case OPERATIONS.MULTIPLICATION:
+        return this.evaluateMultiplication(firstNumber, secondNumber);
+      case OPERATIONS.DIVISION:
+        return this.evaluateDivision(firstNumber, secondNumber);
+      case OPERATIONS.ADDITION:
+        return this.evaluateAddition(firstNumber, secondNumber);
+      case OPERATIONS.SUBTRACTION:
+        return this.evaluateSubtraction(firstNumber, secondNumber);
+      default:
+        break;
     }
   };
 
-  evaluateMultiplicationAndDivision = (element, index, array) => {
-    if (element.type == ELEMENT_TYPES.OPERATION) {
-      switch (element.value) {
-        case OPERATIONS.MULTIPLICATION:
-          break;
-        case OPERATIONS.DIVISION:
-          break;
-      }
-    }
+  evaluatePotency = (firstNumber, secondNumber) =>
+    Math.pow(firstNumber.evaluate(), secondNumber.evaluate());
+
+  evaluateMultiplication = (firstNumber, secondNumber) =>
+    firstNumber.evaluate() * secondNumber.evaluate();
+
+  evaluateDivision = () => firstNumber.evaluate() / secondNumber.evaluate();
+
+  evaluateAddition = () => firstNumber.evaluate() + secondNumber.evaluate();
+
+  evaluateSubtraction = () => firstNumber.evaluate() - secondNumber.evaluate();
+
+  thereAreRemainingOperationsOfTypes = (operationTypes, array) => {
+    let found = false;
+    operationTypes.forEach((type) => {
+      if (this.thereAreRemainingOperationsOfType(type, array)) found = true;
+    });
+    return found;
   };
 
-  evaluateAdditionAndSubtraction = (element, index, array) => {
-    if (element.type == ELEMENT_TYPES.OPERATION) {
-      switch (element.value) {
-        case OPERATIONS.ADDITION:
-          break;
-        case OPERATIONS.SUBTRACTION:
-          break;
-      }
-    }
+  thereAreRemainingOperationsOfType = (operationType, array) => {
+    let found = false;
+    array.forEach((current, index) => {
+      if (current.type === operationType) found = true;
+    });
+    return found;
   };
 }
 
