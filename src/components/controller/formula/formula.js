@@ -1,6 +1,6 @@
 import _ from "lodash";
-import ELEMENT_TYPES from "../../../const/element-types";
-import OPERATIONS from "../../../const/operations";
+import ELEMENT_TYPES from "../../../consts/code-types";
+import OPERATIONS from "../../../consts/operations";
 
 class Formula {
   constructor(elements) {
@@ -9,11 +9,12 @@ class Formula {
 
   // Primary functions
   getElement = (position) => {
+    let foundElement = null;
     this.elements.forEach((value, index) => {
-      if (position === index) return _.cloneDeep(value);
+      if (position === index) foundElement = _.cloneDeep(value);
     });
 
-    return null;
+    return foundElement;
   };
 
   addElement = (newElement) => {
@@ -28,7 +29,7 @@ class Formula {
     });
   };
 
-  removeElement = (position = 0) => {
+  removeElement = (position) => {
     this.elements = this.elements.filter((value, index) => index !== position);
   };
 
@@ -65,8 +66,7 @@ class Formula {
     return element;
   };
 
-  // Continue by verifying the validity of the 
-  // evaluation logic.
+  /* Evaluation start */
   evaluate = () => {
     let elements = this.elements;
     elements = this.findAndExecuteAllOperationsOfTypes(

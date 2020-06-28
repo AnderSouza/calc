@@ -1,4 +1,4 @@
-import ELEMENT_TYPES from "./../../../const/element-types";
+import ELEMENT_TYPES from "../../../consts/code-types";
 
 class FormulaOperator {
     constructor(value) {

@@ -1,8 +1,7 @@
 import Formula from "./formula";
 import FormulaNumber from "./formula-number";
 import FormulaOperator from "./formula-operator";
-import OPERATIONS from "../../../const/operations";
-import NUMBER_KEYS from "../../../const/number-keys";
+import { OPERATIONS, NUMBERS } from "./../../../consts";
 
 const transformStringIntoArray = (string) => {
   let array = [];
@@ -12,75 +11,71 @@ const transformStringIntoArray = (string) => {
   return array;
 };
 
-const createFormulaNumber = (number) => {
-  return new FormulaNumber(number);
-};
+const createFormulaNumber = (number) => new FormulaNumber(number);
 
-const createFormulaOperator = (number) => {
-  return new FormulaOperator(number);
-};
+const createFormulaOperator = (number) => new FormulaOperator(number);
 
-const charIsPointSeparator = (char) => char === NUMBER_KEYS.POINT;
+const charIsPoint = (char) => char === NUMBERS.POINT_CHAR;
 
 const numberIsNotEmpty = (number) => number !== "";
 
-const numberAlreadyHasAPointSeparator = (number) =>
-  number.search(NUMBER_KEYS.POINT) !== -1;
+const numberAlreadyHasAPoint = (number) =>
+  number.search(NUMBERS.POINT_CHAR) !== -1;
 
-export default Interpreter = (formulaText) => {
+const FormulaInterpreter = (formulaText) => {
   let arrayOfFormulaCharacters = transformStringIntoArray(formulaText);
   let formula = new Formula();
   let currentNumber = "";
   let locationTrail = [];
 
-  arrayOfFormulaCharacters.forEach((char) => {
+  const processCharacter = (char) => {
     switch (char) {
-      case "0":
-      case "1":
-      case "2":
-      case "3":
-      case "4":
-      case "5":
-      case "6":
-      case "7":
-      case "8":
-      case "9":
-      case ".":
-        if (
-          charIsPointSeparator(char) &&
-          numberAlreadyHasAPointSeparator(currentNumber)
-        ) {
+      case NUMBERS.ZERO_CHAR:
+      case NUMBERS.ONE_CHAR:
+      case NUMBERS.TWO_CHAR:
+      case NUMBERS.THREE_CHAR:
+      case NUMBERS.FOUR_CHAR:
+      case NUMBERS.FIVE_CHAR:
+      case NUMBERS.SIX_CHAR:
+      case NUMBERS.SEVEN_CHAR:
+      case NUMBERS.EIGHT_CHAR:
+      case NUMBERS.NINE_CHAR:
+      case NUMBERS.POINT_CHAR:
+        if (charIsPoint(char) && numberAlreadyHasAPoint(currentNumber)) {
+          // This should throw an exception.
           return;
-        } else {
-          currentNumber += char;
         }
+        currentNumber += char;
         break;
-      case "+":
-      case "-":
-      case "*":
-      case "/":
-      case "√":
-      case "^":
-        const code = OPERATIONS.getOperationCodeFromCharacter(char);
+      case OPERATIONS.ADDITION_CHAR:
+      case OPERATIONS.SUBTRACTION_CHAR:
+      case OPERATIONS.MULTIPLICATION_CHAR:
+      case OPERATIONS.DIVISION_CHAR:
+      case OPERATIONS.POTENCY_CHAR:
+        const code = OPERATIONS.getOperationCodeFromChar(char);
         if (numberIsNotEmpty(currentNumber)) {
           const formulaNumber = createFormulaNumber(currentNumber);
           formula.addElement(formulaNumber, locationTrail);
           currentNumber = "";
         }
 
-        const FormulaOperator = createFormulaOperator(code);
-        formula.addElement(FormulaOperator, locationTrail);
+        const formulaOperator = createFormulaOperator(code);
+        formula.addElement(formulaOperator, locationTrail);
         break;
       case "(":
         const element = formula.getElementThroughTrail(locationTrail);
-        const position = formula.getNumberOfElements();
+        const position = element.getNumberOfElements();
         locationTrail.push(position);
         break;
       case ")":
         locationTrail.pop();
         break;
     }
-  });
-  
+  };
+
+  arrayOfFormulaCharacters.forEach(processCharacter);
+
   return formula;
 };
+
+export default FormulaInterpreter;

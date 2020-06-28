@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Display, Keyboard } from "../index";
 import formulaInterpreter from "./formula/formula-interpreter";
-import ELEMENT_TYPES from "../../const/element-types";
-import OPERATIONS from "../../const/operations";
-import NUMBER_KEYS from "../../const/number-keys";
+
+import { CODE_TYPES, OPERATIONS, NUMBERS, COMMANDS } from "../../consts";
 
 const Controller = () => {
   const [formulaText, setFormulaText] = useState("");
@@ -15,55 +14,64 @@ const Controller = () => {
     setResult(evaluation);
   }, formulaText);
 
-  const characterIsANumber = (char) => {
+  const charIsANumber = (char) => {
     switch (char) {
-      case NUMBER_KEYS.ZERO:
-      case NUMBER_KEYS.ONE:
-      case NUMBER_KEYS.TWO:
-      case NUMBER_KEYS.THREE:
-      case NUMBER_KEYS.FOUR:
-      case NUMBER_KEYS.FIVE:
-      case NUMBER_KEYS.SIX:
-      case NUMBER_KEYS.SEVEN:
-      case NUMBER_KEYS.EIGHT:
-      case NUMBER_KEYS.NINE:
-      case NUMBER_KEYS.TEN:
+      case NUMBERS.ZERO_CHAR:
+      case NUMBERS.ONE_CHAR:
+      case NUMBERS.TWO_CHAR:
+      case NUMBERS.THREE_CHAR:
+      case NUMBERS.FOUR_CHAR:
+      case NUMBERS.FIVE_CHAR:
+      case NUMBERS.SIX_CHAR:
+      case NUMBERS.SEVEN_CHAR:
+      case NUMBERS.EIGHT_CHAR:
+      case NUMBERS.NINE_CHAR:
         return true;
       default:
         return false;
     }
   };
 
-  const characterIsAnOperation = (char) => {
+  const charIsAnOperation = (char) => {
     switch (char) {
-      case OPERATIONS.ADDITION:
-      case OPERATIONS.SUBTRACTION:
-      case OPERATIONS.MULTIPLICATION:
-      case OPERATIONS.DIVISION:
-      case OPERATIONS.POTENCY:
+      case OPERATIONS.ADDITION_CHAR:
+      case OPERATIONS.SUBTRACTION_CHAR:
+      case OPERATIONS.MULTIPLICATION_CHAR:
+      case OPERATIONS.DIVISION_CHAR:
+      case OPERATIONS.POTENCY_CHAR:
         return true;
       default:
         return false;
     }
   };
 
-  const characterIsAParenthesis = (char) => {
+  const charIsAParenthesis = (char) => {
     switch (char) {
-      case OPERATIONS.OPENING_PARENTHESIS:
-      case OPERATIONS.CLOSING_PARENTHESIS:
+      case OPERATIONS.OPENING_PARENTHESIS_CHAR:
+      case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
         return true;
       default:
         return false;
     }
   };
 
-  const characterIsAPoint = (char) => char === NUMBER_KEYS.POINT;
+  const charIsAParenthesis = (char) => {
+    switch (char) {
+      case OPERATIONS.OPENING_PARENTHESIS_CHAR:
+      case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
+        return true;
+      default:
+        return false;
+    }
+  };
+
+  const charIsAPoint = (char) => char === NUMBERS.POINT_CHAR;
 
   const getCurrentNumberFromFormulaText = (formulaText) => {
     let currentNumber = "";
     for (let i = formulaText.length - 1; i >= 0; i--) {
       const char = formulaText.charAt(i);
-      if (characterIsANumber(char) || characterIsAPoint(char)) {
+      if (charIsANumber(char) || charIsAPoint(char)) {
         currentNumber += char;
       } else {
         return currentNumber;
@@ -71,9 +79,8 @@ const Controller = () => {
     }
   };
 
-  const currentNumberAlreadyHasAPointSeparator = (formulaText) =>
-    getCurrentNumberFromFormulaText(formulaText).search(NUMBER_KEYS.POINT) !==
-    -1;
+  const currentNumberAlreadyHasAPoint = (formulaText) =>
+    getCurrentNumberFromFormulaText(formulaText).search(NUMBERS.POINT) !== -1;
 
   const removeCurrentNumberFromFormulaText = () => {
     const size = getCurrentNumberFromFormulaText(formulaText).length;
@@ -87,112 +94,140 @@ const Controller = () => {
 
   const isEmpty = (string) => string.length === 0;
 
-  const getLastCharacter = (string) => {
+  const getLastChar = (string) => {
+    if (string.length === 0) return "";
     const lastPosition = string.length - 1;
     return string.charAt(lastPosition);
   };
 
-  const lastCharacterIsAnOperation = (string) => {
-    const char = getLastCharacter(string);
-    return characterIsAnOperation(char);
+  const lastCharIsAnOperation = (string) => {
+    const char = getLastChar(string);
+    return charIsAnOperation(char);
   };
 
-  const lastCharacterIsANumber = (string) => {
-    const char = getLastCharacter(string);
-    return characterIsANumber(char);
+  const lastCharIsANumber = (string) => {
+    const char = getLastChar(string);
+    return charIsANumber(char);
   };
-  const lastCharacterIsAParenthesis = (string) => {
-    const char = getLastCharacter(string);
-    return characterIsAParenthesis(char);
+  const lastCharIsAParenthesis = (string) => {
+    const char = getLastChar(string);
+    return charIsAParenthesis(char);
   };
 
-  const replaceLastCharacterInFormula = (replacement) => {
+  const replaceLastCharInFormula = (replacement) => {
     const lastPosition = formulaText.length - 1;
     let newString = formulaText.substr(0, lastPosition - 1);
     newString += replacement;
     setFormulaText(newString);
   };
 
-  const handleNumber = (char) => {
-    switch (char) {
-      case NUMBER_KEYS.POINT:
-        if (
-          isEmpty(formulaText) ||
-          currentNumberAlreadyHasAPointSeparator(formulaText)
-        )
+  const handleNumber = (code) => {
+    switch (code) {
+      case NUMBERS.POINT:
+        if (isEmpty(formulaText) || currentNumberAlreadyHasAPoint(formulaText)) {
+          // This should throw an exception.
           return;
-      case NUMBER_KEYS.ZERO:
-      case NUMBER_KEYS.ONE:
-      case NUMBER_KEYS.TWO:
-      case NUMBER_KEYS.THREE:
-      case NUMBER_KEYS.FOUR:
-      case NUMBER_KEYS.FIVE:
-      case NUMBER_KEYS.SIX:
-      case NUMBER_KEYS.SEVEN:
-      case NUMBER_KEYS.EIGHT:
-      case NUMBER_KEYS.NINE:
-      case NUMBER_KEYS.TEN:
+        }
+      case NUMBERS.ZERO:
+      case NUMBERS.ONE:
+      case NUMBERS.TWO:
+      case NUMBERS.THREE:
+      case NUMBERS.FOUR:
+      case NUMBERS.FIVE:
+      case NUMBERS.SIX:
+      case NUMBERS.SEVEN:
+      case NUMBERS.EIGHT:
+      case NUMBERS.NINE:
+        const char = OPERATIONS.getOperationCharFromCode(code);
         setFormulaText(formulaText + char);
         break;
       default:
+        // This should throw an exception
         break;
     }
   };
 
-  const handleOperation = (char) => {
+  const handleOperation = (code) => {
+    const char = OPERATIONS.getOperationCharFromCode(code);
+    switch (code) {
+      case OPERATIONS.MULTIPLICATION:
+      case OPERATIONS.DIVISION:
+      case OPERATIONS.POTENCY:
+        if (isEmpty(formulaText)) {
+          // This should throw an exception
+          return;
+        }
+
+      case OPERATIONS.ADDITION:
+      case OPERATIONS.SUBTRACTION:
+        if (lastCharIsAnOperation(formulaText)) {
+          replaceLastCharInFormula(char);
+        } else {
+          setFormulaText(formulaText + char);
+        }
+        break;
+      case OPERATIONS.OPENING_PARENTHESIS:
+        if (
+          isEmpty(formulaText) ||
+          lastCharIsANumber(formulaText) ||
+          lastCharIsAParenthesis(formulaText)
+        ) {
+          // This should throw an exception
+          return;
+        }
+        setFormulaText(formulaText + char);
+        break;
+      case OPERATIONS.CLOSING_PARENTHESIS:
+        if (
+          isEmpty(formulaText) ||
+          lastCharIsAnOperation(formulaText) ||
+          lastCharIsAParenthesis(formulaText)
+        ) {
+          return;
+        }
+        setFormulaText(formulaText + char);
+        break;
+      default:
+        // This should throw an exception
+        break;
+    }
+  };
+
+  const handleCommand = (code) => {
     if (isEmpty(formulaText)) {
+      // This should throw an exception
       return;
     } else {
-      switch (char) {
-        case OPERATIONS.ADDITION:
-        case OPERATIONS.SUBTRACTION:
-        case OPERATIONS.MULTIPLICATION:
-        case OPERATIONS.DIVISION:
-        case OPERATIONS.POTENCY:
-          if (lastCharacterIsAnOperation(formulaText)) {
-            replaceLastCharacterInFormula(char);
-          } else {
-            setFormulaText(formulaText + char);
-          }
-          break;
-        case OPERATIONS.OPENING_PARENTHESIS:
-          if (lastCharacterIsANumber(formulaText) || lastCharacterIsAParenthesis(formulaText)) {
-            return;
-          } else {
-            setFormulaText(formulaText + char);
-          }
-          break;
-        case OPERATIONS.CLOSING_PARENTHESIS:
-          if (lastCharacterIsAnOperation(formulaText) || lastCharacterIsAParenthesis(formulaText)) {
-            return;
-          } else {
-            setFormulaText(formulaText + char);
-          }
-          break;
-        case OPERATIONS.CLEAR_ELEMENT:
+      switch (code) {
+        case COMMANDS.CLEAR_ELEMENT:
           removeCurrentNumberFromFormulaText();
           break;
-        case OPERATIONS.CLEAR:
+        case COMMANDS.CLEAR:
           resetFormulaText();
           break;
-        case OPERATIONS.RESULT:
+        case COMMANDS.RESULT:
           setFormulaText(result);
           break;
         default:
+          // This should throw an exception
           break;
       }
     }
   };
 
-  const handleButtonPress = (type, key) => {
+  const handleButtonPress = (type, code) => {
     switch (type) {
-      case ELEMENT_TYPES.NUMBER:
-        handleNumber(key);
+      case CODE_TYPES.NUMBER:
+        handleNumber(code);
         break;
-      case ELEMENT_TYPES.OPERATION:
-        handleOperation(key);
+      case CODE_TYPES.OPERATION:
+        handleOperation(code);
+        break;
+      case CODE_TYPES.COMMAND:
+        handleCommand(code);
         break;
       default:
+        // This should throw and exception
         break;
     }
   };
