@@ -1,6 +1,6 @@
-import _, { first } from "lodash";
-import ELEMENT_TYPES from "./../../const/element-types";
-import OPERATIONS from "./../../const/operations";
+import _ from "lodash";
+import ELEMENT_TYPES from "../../../const/element-types";
+import OPERATIONS from "../../../const/operations";
 
 class Formula {
   constructor(elements) {

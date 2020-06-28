@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Display, Keyboard } from "../index";
-import formulaInterpreter from "./formula-interpreter";
+import formulaInterpreter from "./formula/formula-interpreter";
 import ELEMENT_TYPES from "../../const/element-types";
 import OPERATIONS from "../../const/operations";
 import NUMBER_KEYS from "../../const/number-keys";

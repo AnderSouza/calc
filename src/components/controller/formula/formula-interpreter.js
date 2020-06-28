@@ -1,8 +1,8 @@
 import Formula from "./formula";
 import FormulaNumber from "./formula-number";
 import FormulaOperator from "./formula-operator";
-import OPERATIONS from "../../const/operations";
-import NUMBER_KEYS from "../../const/number-keys";
+import OPERATIONS from "../../../const/operations";
+import NUMBER_KEYS from "../../../const/number-keys";
 
 const transformStringIntoArray = (string) => {
   let array = [];
