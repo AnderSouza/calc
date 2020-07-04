@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+}
+
+@font-face{
+    font-family: 'Open Sans';
+    src: url('/fonts/opensans-regular.ttf'),
+    url('/fonts/opensans-bold.ttf'),
+    url('/fonts/opensans-italic.ttf')
+    ;
+}

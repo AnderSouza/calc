@@ -3,7 +3,7 @@ import COMMANDS from "./commands";
 import NUMBERS from "./numbers";
 import OPERATIONS from "./operations";
 
-export default {
+export {
     CODE_TYPES,
     COMMANDS,
     NUMBERS,

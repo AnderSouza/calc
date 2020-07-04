@@ -1,6 +1,7 @@
 import Formula from "./formula";
 import FormulaNumber from "./formula-number";
 import FormulaOperator from "./formula-operator";
+import CalcException from "../../../exceptions/calc-exception";
 import { OPERATIONS, NUMBERS } from "./../../../consts";
 
 const transformStringIntoArray = (string) => {
@@ -42,8 +43,7 @@ const FormulaInterpreter = (formulaText) => {
       case NUMBERS.NINE_CHAR:
       case NUMBERS.POINT_CHAR:
         if (charIsPoint(char) && numberAlreadyHasAPoint(currentNumber)) {
-          // This should throw an exception.
-          return;
+          throw new CalcException("Unknown number.");
         }
         currentNumber += char;
         break;
@@ -70,6 +70,8 @@ const FormulaInterpreter = (formulaText) => {
       case ")":
         locationTrail.pop();
         break;
+      default:
+        throw new CalcException("Unknown character.");
     }
   };
 

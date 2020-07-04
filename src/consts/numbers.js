@@ -1,3 +1,5 @@
+import CalcException from "./../exceptions/calc-exception";
+
 export const ZERO = "ZERO";
 export const ONE = "ONE";
 export const TWO = "TWO";
@@ -48,8 +50,7 @@ export const getNumberCharFromCode = (code) => {
     case POINT:
       return POINT_CHAR;
     default:
-      // This should throw an exception.
-      break;
+      throw new CalcException("Unknown number code.");
   }
 };
 
@@ -78,8 +79,7 @@ export const getNumberCodeFromChar = (char) => {
     case POINT_CHAR:
       return POINT;
     default:
-      // This should throw an exception.
-      break;
+      throw new CalcException("Unknown number char.");
   }
 };
 
@@ -105,5 +105,7 @@ export default {
   SEVEN_CHAR,
   EIGHT_CHAR,
   NINE_CHAR,
-  POINT_CHAR
+  POINT_CHAR,
+  getNumberCharFromCode,
+  getNumberCodeFromChar
 };

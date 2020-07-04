@@ -1,3 +1,5 @@
+import CalcException from "./../exceptions/calc-exception";
+
 export const ADDITION = "ADD";
 export const SUBTRACTION = "SUB";
 export const MULTIPLICATION = "MUL";
@@ -31,8 +33,7 @@ export const getOperationCharFromCode = (code) => {
     case CLOSING_PARENTHESIS:
       return CLOSING_PARENTHESIS_CHAR;
     default:
-      // This should throw an exception.
-      break;
+      throw new CalcException("Unknown operation code: "+code);
   }
 };
 
@@ -53,8 +54,7 @@ export const getOperationCodeFromChar = (char) => {
     case CLOSING_PARENTHESIS_CHAR:
       return CLOSING_PARENTHESIS;
     default:
-      // This should throw an exception.
-      break;
+      throw new CalcException("Unknown operation char.");
   }
 };
 
@@ -72,5 +72,7 @@ export default {
   DIVISION_CHAR,
   POTENCY_CHAR,
   OPENING_PARENTHESIS_CHAR,
-  CLOSING_PARENTHESIS_CHAR
+  CLOSING_PARENTHESIS_CHAR,
+  getOperationCharFromCode,
+  getOperationCodeFromChar
 };

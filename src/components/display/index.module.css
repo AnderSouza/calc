@@ -1,0 +1,27 @@
+.display {
+    border: solid darkgrey 1px;
+    padding: 5px;
+    height: 80px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-color: lightsteelblue;
+    text-align: right;
+    color: rgb(75, 75, 75);
+}
+
+.topDisplay {
+    height: 35px;
+    line-height: 25px;
+    box-sizing: inherit;
+    border-radius: inherit;
+    padding: 5px;
+    font-size: 1.50em;
+}
+
+.bottomDisplay {
+    height: 35px;
+    line-height: 25px;
+    box-sizing: inherit;
+    border-radius: inherit;
+    padding: 5px;
+}

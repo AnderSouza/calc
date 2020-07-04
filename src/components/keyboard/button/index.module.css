@@ -1,0 +1,46 @@
+.emptyButton {
+    box-sizing:inherit;
+    visibility: hidden;
+    text-align: center;
+    line-height: 50px;
+}
+
+.defaultButton {
+    box-sizing:inherit;
+    text-align: center;
+    line-height: 50px;
+    background-color: lightslategray;
+    cursor: pointer;
+}
+
+.defaultButton:hover {
+    opacity: 0.70;
+}
+
+.wideButton {
+    box-sizing:inherit;
+    text-align: center;
+    line-height: 50px;
+    background-color: lightslategray;
+    grid-column: 1 / span 2;
+    grid-row: 6 / span 1;
+    cursor: pointer;
+}
+
+.wideButton:hover {
+    opacity: 0.70;
+}
+
+.tallButton {
+    box-sizing:inherit;
+    text-align: center;
+    line-height: 100px;
+    background-color: lightslategray;
+    grid-column: 4 / span 1;
+    grid-row: 5 / -1;
+    cursor: pointer;
+}
+
+.tallButton:hover {
+    opacity: 0.70;
+}

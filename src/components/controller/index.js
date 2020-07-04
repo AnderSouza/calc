@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-import { Display, Keyboard } from "../index";
+import { Display, Keyboard } from "./../index";
 import formulaInterpreter from "./formula/formula-interpreter";
-
-import { CODE_TYPES, OPERATIONS, NUMBERS, COMMANDS } from "../../consts";
+import { CODE_TYPES, OPERATIONS, NUMBERS, COMMANDS } from "./../../consts";
+import CalcException from "../../exceptions/calc-exception";
 
 const Controller = () => {
   const [formulaText, setFormulaText] = useState("");
   const [result, setResult] = useState("");
 
   useEffect(() => {
-    const evaluation = formulaInterpreter(formulaText).evaluate();
+    const evaluation = "";//formulaInterpreter(formulaText).evaluate();
     setResult(evaluation);
-  }, formulaText);
+  }, [formulaText]);
 
   const charIsANumber = (char) => {
     switch (char) {
@@ -45,25 +45,14 @@ const Controller = () => {
     }
   };
 
-  const charIsAParenthesis = (char) => {
-    switch (char) {
-      case OPERATIONS.OPENING_PARENTHESIS_CHAR:
-      case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
-        return true;
-      default:
-        return false;
-    }
-  };
+  const charIsAParenthesis = (char) =>
+    charIsAOpeningParenthesis(char) || charIsAClosingParenthesis(char);
 
-  const charIsAParenthesis = (char) => {
-    switch (char) {
-      case OPERATIONS.OPENING_PARENTHESIS_CHAR:
-      case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
-        return true;
-      default:
-        return false;
-    }
-  };
+  const charIsAOpeningParenthesis = (char) =>
+    char === OPERATIONS.OPENING_PARENTHESIS_CHAR;
+
+  const charIsAClosingParenthesis = (char) =>
+    char === OPERATIONS.CLOSING_PARENTHESIS_CHAR;
 
   const charIsAPoint = (char) => char === NUMBERS.POINT_CHAR;
 
@@ -77,6 +66,7 @@ const Controller = () => {
         return currentNumber;
       }
     }
+    return "";
   };
 
   const currentNumberAlreadyHasAPoint = (formulaText) =>
@@ -114,9 +104,14 @@ const Controller = () => {
     return charIsAParenthesis(char);
   };
 
+  const lastCharIsAOpeningParenthesis = (string) => {
+    const char = getLastChar(string);
+    return charIsAOpeningParenthesis(char);
+  };
+
   const replaceLastCharInFormula = (replacement) => {
-    const lastPosition = formulaText.length - 1;
-    let newString = formulaText.substr(0, lastPosition - 1);
+    const quantity = formulaText.length - 1;
+    let newString = formulaText.substr(0, quantity);
     newString += replacement;
     setFormulaText(newString);
   };
@@ -124,9 +119,11 @@ const Controller = () => {
   const handleNumber = (code) => {
     switch (code) {
       case NUMBERS.POINT:
-        if (isEmpty(formulaText) || currentNumberAlreadyHasAPoint(formulaText)) {
-          // This should throw an exception.
-          return;
+        if (
+          isEmpty(formulaText) ||
+          currentNumberAlreadyHasAPoint(formulaText)
+        ) {
+          throw new CalcException("Invalid position for a point.");
         }
       case NUMBERS.ZERO:
       case NUMBERS.ONE:
@@ -138,12 +135,11 @@ const Controller = () => {
       case NUMBERS.SEVEN:
       case NUMBERS.EIGHT:
       case NUMBERS.NINE:
-        const char = OPERATIONS.getOperationCharFromCode(code);
+        const char = NUMBERS.getNumberCharFromCode(code);
         setFormulaText(formulaText + char);
         break;
       default:
-        // This should throw an exception
-        break;
+        throw new CalcException("Unknown number.");
     }
   };
 
@@ -153,9 +149,10 @@ const Controller = () => {
       case OPERATIONS.MULTIPLICATION:
       case OPERATIONS.DIVISION:
       case OPERATIONS.POTENCY:
-        if (isEmpty(formulaText)) {
-          // This should throw an exception
-          return;
+        if (isEmpty(formulaText) || lastCharIsAOpeningParenthesis(formulaText)) {
+          throw new CalcException(
+            "Cannot insert this operation in this position."
+          );
         }
 
       case OPERATIONS.ADDITION:
@@ -172,8 +169,9 @@ const Controller = () => {
           lastCharIsANumber(formulaText) ||
           lastCharIsAParenthesis(formulaText)
         ) {
-          // This should throw an exception
-          return;
+          throw new CalcException(
+            "Cannot insert a opening parenthesis at this point."
+          );
         }
         setFormulaText(formulaText + char);
         break;
@@ -181,22 +179,20 @@ const Controller = () => {
         if (
           isEmpty(formulaText) ||
           lastCharIsAnOperation(formulaText) ||
-          lastCharIsAParenthesis(formulaText)
+          lastCharIsAOpeningParenthesis(formulaText)
         ) {
-          return;
+          throw new CalcException("Cannot insert a closing parenthesis at this point.");
         }
         setFormulaText(formulaText + char);
         break;
       default:
-        // This should throw an exception
-        break;
+        throw new CalcException("Unknown operation.");
     }
   };
 
   const handleCommand = (code) => {
     if (isEmpty(formulaText)) {
-      // This should throw an exception
-      return;
+      throw new CalcException("Formula is empty.");
     } else {
       switch (code) {
         case COMMANDS.CLEAR_ELEMENT:
@@ -209,26 +205,28 @@ const Controller = () => {
           setFormulaText(result);
           break;
         default:
-          // This should throw an exception
-          break;
+          throw new CalcException("Unknown command.");
       }
     }
   };
 
   const handleButtonPress = (type, code) => {
-    switch (type) {
-      case CODE_TYPES.NUMBER:
-        handleNumber(code);
-        break;
-      case CODE_TYPES.OPERATION:
-        handleOperation(code);
-        break;
-      case CODE_TYPES.COMMAND:
-        handleCommand(code);
-        break;
-      default:
-        // This should throw and exception
-        break;
+    try {
+      switch (type) {
+        case CODE_TYPES.NUMBER:
+          handleNumber(code);
+          break;
+        case CODE_TYPES.OPERATION:
+          handleOperation(code);
+          break;
+        case CODE_TYPES.COMMAND:
+          handleCommand(code);
+          break;
+        default:
+          throw new CalcException("Unknown code type. 1");
+      }
+    } catch(exception) {
+      console.error(exception.message);
     }
   };
 

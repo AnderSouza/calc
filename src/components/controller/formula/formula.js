@@ -1,6 +1,8 @@
 import _ from "lodash";
 import ELEMENT_TYPES from "../../../consts/code-types";
 import OPERATIONS from "../../../consts/operations";
+import FormulaNumber from "./formula-number";
+import CalcException from "../../../exceptions/calc-exception";
 
 class Formula {
   constructor(elements) {
@@ -68,32 +70,31 @@ class Formula {
 
   /* Evaluation start */
   evaluate = () => {
-    let elements = this.elements;
+    let elements = _.cloneDeep(this.elements);
+
     elements = this.findAndExecuteAllOperationsOfTypes(
       [OPERATIONS.POTENCY],
-      this.elements
+      elements
     );
     elements = this.findAndExecuteAllOperationsOfTypes(
       [OPERATIONS.MULTIPLICATION, OPERATIONS.DIVISION],
-      this.elements
+      elements
     );
     elements = this.findAndExecuteAllOperationsOfTypes(
       [OPERATIONS.ADDITION, OPERATIONS.SUBTRACTION],
-      this.elements
+      elements
     );
 
     return elements.pop().evaluate();
   };
 
   findAndExecuteAllOperationsOfTypes = (operationTypes, elements) => {
-    elements = _.cloneDeep(elements);
-
     let operationIndex = null;
     let firstNumber = null;
     let secondNumber = null;
     let operation = null;
 
-    while (thereAreRemainingOperationsOfTypes(operationTypes, elements)) {
+    while (this.thereAreRemainingOperationsOfTypes(operationTypes, elements)) {
       operationIndex = null;
       firstNumber = null;
       secondNumber = null;
@@ -107,21 +108,32 @@ class Formula {
           operation = elements[x];
           operationIndex = x;
 
-          // In case these positions don't contain a number,
-          // an exception should be thrown.
           firstNumber = elements[operationIndex - 1];
           secondNumber = elements[operationIndex + 1];
           break;
         }
       }
 
-      if (firstNumber !== null && secondNumber !== null && operation !== null) {
+      if (
+        firstNumber !== undefined &&
+        secondNumber !== undefined &&
+        operation !== undefined
+      ) {
         elements[operationIndex - 1] = this.executeOperation(
           operation,
           firstNumber,
           secondNumber
         );
         elements.splice(operationIndex, 2);
+      } else if (secondNumber !== undefined && operation !== undefined) {
+        if (operation.value === OPERATIONS.ADDITION) {
+          let value = secondNumber.evaluate();
+          elements[operationIndex] = this.createNumber(value);
+        } else if (operation.value === OPERATIONS.SUBTRACTION) {
+          let value = secondNumber.evaluate();
+          elements[operationIndex] = this.createNumber(-value);
+        }
+        elements.splice(operationIndex + 1, 1);
       }
     }
 
@@ -131,17 +143,27 @@ class Formula {
   executeOperation = (operation, firstNumber, secondNumber) => {
     switch (operation) {
       case OPERATIONS.POTENCY:
-        return this.evaluatePotency(firstNumber, secondNumber);
+        return this.createNumber(
+          this.evaluatePotency(firstNumber, secondNumber)
+        );
       case OPERATIONS.MULTIPLICATION:
-        return this.evaluateMultiplication(firstNumber, secondNumber);
+        return this.createNumber(
+          this.evaluateMultiplication(firstNumber, secondNumber)
+        );
       case OPERATIONS.DIVISION:
-        return this.evaluateDivision(firstNumber, secondNumber);
+        return this.createNumber(
+          this.evaluateDivision(firstNumber, secondNumber)
+        );
       case OPERATIONS.ADDITION:
-        return this.evaluateAddition(firstNumber, secondNumber);
+        return this.createNumber(
+          this.evaluateAddition(firstNumber, secondNumber)
+        );
       case OPERATIONS.SUBTRACTION:
-        return this.evaluateSubtraction(firstNumber, secondNumber);
+        return this.createNumber(
+          this.evaluateSubtraction(firstNumber, secondNumber)
+        );
       default:
-        break;
+        throw new CalcException("Unknown operation.");
     }
   };
 
@@ -151,11 +173,14 @@ class Formula {
   evaluateMultiplication = (firstNumber, secondNumber) =>
     firstNumber.evaluate() * secondNumber.evaluate();
 
-  evaluateDivision = () => firstNumber.evaluate() / secondNumber.evaluate();
+  evaluateDivision = (firstNumber, secondNumber) =>
+    firstNumber.evaluate() / secondNumber.evaluate();
 
-  evaluateAddition = () => firstNumber.evaluate() + secondNumber.evaluate();
+  evaluateAddition = (firstNumber, secondNumber) =>
+    firstNumber.evaluate() + secondNumber.evaluate();
 
-  evaluateSubtraction = () => firstNumber.evaluate() - secondNumber.evaluate();
+  evaluateSubtraction = (firstNumber, secondNumber) =>
+    firstNumber.evaluate() - secondNumber.evaluate();
 
   thereAreRemainingOperationsOfTypes = (operationTypes, array) => {
     let found = false;
@@ -167,11 +192,13 @@ class Formula {
 
   thereAreRemainingOperationsOfType = (operationType, array) => {
     let found = false;
-    array.forEach((current, index) => {
-      if (current.type === operationType) found = true;
+    array.forEach((element) => {
+      if (element.type === operationType) found = true;
     });
     return found;
   };
+
+  createNumber = (number) => new FormulaNumber(number);
 }
 
 export default Formula;

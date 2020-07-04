@@ -1,0 +1,13 @@
+.keyboard {
+    padding: 5px;
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 50px 50px 50px 50px 50px 50px;
+    justify-content: space-around;
+    gap: 10px 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    background-color: lightsteelblue;
+    color: white;
+}
