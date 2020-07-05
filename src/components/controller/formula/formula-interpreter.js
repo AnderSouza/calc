@@ -20,7 +20,8 @@ const charIsPoint = (char) => char === NUMBERS.POINT_CHAR;
 
 const numberIsNotEmpty = (number) => number !== "";
 
-const numberAlreadyHasAPoint = (number) =>
+// REUSE THE FUNCTION FROM THE CONTROLLER
+const numericStringAlreadyHasAPoint = (number) =>
   number.search(NUMBERS.POINT_CHAR) !== -1;
 
 const FormulaInterpreter = (formulaText) => {
@@ -42,7 +43,7 @@ const FormulaInterpreter = (formulaText) => {
       case NUMBERS.EIGHT_CHAR:
       case NUMBERS.NINE_CHAR:
       case NUMBERS.POINT_CHAR:
-        if (charIsPoint(char) && numberAlreadyHasAPoint(currentNumber)) {
+        if (charIsPoint(char) && numericStringAlreadyHasAPoint(currentNumber)) {
           throw new CalcException("Unknown number.");
         }
         currentNumber += char;

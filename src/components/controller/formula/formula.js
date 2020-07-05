@@ -5,7 +5,7 @@ import FormulaNumber from "./formula-number";
 import CalcException from "../../../exceptions/calc-exception";
 
 class Formula {
-  constructor(elements) {
+  constructor(elements = []) {
     this.elements = elements;
   }
 
@@ -70,6 +70,7 @@ class Formula {
 
   /* Evaluation start */
   evaluate = () => {
+    if(this.elements.length === 0) return 0;
     let elements = _.cloneDeep(this.elements);
 
     elements = this.findAndExecuteAllOperationsOfTypes(
