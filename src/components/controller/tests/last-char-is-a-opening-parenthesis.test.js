@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { lastCharIsAOpeningParenthesis } from "../functions";
 
 describe("lastCharIsAOpeningParenthesis function", () => {
-  it("Returns true when the last character is a opening parenthesis.", () => {
+  it("Returns true when the last character is an opening parenthesis.", () => {
     const expected = true;
     const actual = lastCharIsAOpeningParenthesis("25+50+(");
     expect(actual).to.equal(expected);

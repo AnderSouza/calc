@@ -1,4 +1,4 @@
-import CalcException from "./../exceptions/calc-exception";
+import {CalcException} from "../exceptions";
 
 export const ZERO = "ZERO";
 export const ONE = "ONE";
@@ -50,7 +50,7 @@ export const getNumberCharFromCode = (code) => {
     case POINT:
       return POINT_CHAR;
     default:
-      throw new CalcException("Unknown number code.");
+      throw new CalcException("Unknown number code: "+code);
   }
 };
 

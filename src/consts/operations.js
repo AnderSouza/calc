@@ -1,4 +1,4 @@
-import CalcException from "./../exceptions/calc-exception";
+import {CalcException} from "../exceptions";
 
 export const ADDITION = "ADD";
 export const SUBTRACTION = "SUB";

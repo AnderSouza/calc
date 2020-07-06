@@ -1,33 +1,16 @@
 import Formula from "./formula";
-import FormulaNumber from "./formula-number";
-import FormulaOperator from "./formula-operator";
-import CalcException from "../../../exceptions/calc-exception";
-import { OPERATIONS, NUMBERS } from "./../../../consts";
-
-const transformStringIntoArray = (string) => {
-  let array = [];
-  for (let i = 0; array.length < string.length; i++) {
-    array.push(string.charAt(i));
-  }
-  return array;
-};
-
-const createFormulaNumber = (number) => new FormulaNumber(number);
-
-const createFormulaOperator = (number) => new FormulaOperator(number);
-
-const charIsPoint = (char) => char === NUMBERS.POINT_CHAR;
-
-const numberIsNotEmpty = (number) => number !== "";
-
-// REUSE THE FUNCTION FROM THE CONTROLLER
-const numericStringAlreadyHasAPoint = (number) =>
-  number.search(NUMBERS.POINT_CHAR) !== -1;
+import {
+  transformStringIntoArray,
+  goDownOnLocationTrail,
+  goUpOnLocationTrail,
+  processNumber,
+  processOperation,
+} from "./functions";
+import { OPERATIONS } from "./../../../consts";
 
 const FormulaInterpreter = (formulaText) => {
   let arrayOfFormulaCharacters = transformStringIntoArray(formulaText);
   let formula = new Formula();
-  let currentNumber = "";
   let locationTrail = [];
 
   const processCharacter = (char) => {
@@ -43,33 +26,20 @@ const FormulaInterpreter = (formulaText) => {
       case NUMBERS.EIGHT_CHAR:
       case NUMBERS.NINE_CHAR:
       case NUMBERS.POINT_CHAR:
-        if (charIsPoint(char) && numericStringAlreadyHasAPoint(currentNumber)) {
-          throw new CalcException("Unknown number.");
-        }
-        currentNumber += char;
+        formula = processNumber(char, formula, locationTrail);
         break;
       case OPERATIONS.ADDITION_CHAR:
       case OPERATIONS.SUBTRACTION_CHAR:
       case OPERATIONS.MULTIPLICATION_CHAR:
       case OPERATIONS.DIVISION_CHAR:
       case OPERATIONS.POTENCY_CHAR:
-        const code = OPERATIONS.getOperationCodeFromChar(char);
-        if (numberIsNotEmpty(currentNumber)) {
-          const formulaNumber = createFormulaNumber(currentNumber);
-          formula.addElement(formulaNumber, locationTrail);
-          currentNumber = "";
-        }
-
-        const formulaOperator = createFormulaOperator(code);
-        formula.addElement(formulaOperator, locationTrail);
+        formula = processOperation(char, formula, locationTrail);
         break;
-      case "(":
-        const element = formula.getElementThroughTrail(locationTrail);
-        const position = element.getNumberOfElements();
-        locationTrail.push(position);
+      case OPERATIONS.OPENING_PARENTHESIS_CHAR:
+        locationTrail = goDownOnLocationTrail(locationTrail, formula);
         break;
-      case ")":
-        locationTrail.pop();
+      case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
+        locationTrail = goUpOnLocationTrail(locationTrail);
         break;
       default:
         throw new CalcException("Unknown character.");

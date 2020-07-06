@@ -1,18 +1,19 @@
 import _ from "lodash";
-import ELEMENT_TYPES from "../../../consts/code-types";
+import { ELEMENT_TYPES } from "../../../consts";
 import OPERATIONS from "../../../consts/operations";
 import FormulaNumber from "./formula-number";
-import CalcException from "../../../exceptions/calc-exception";
+import { CalcException } from "../../../exceptions";
 
 class Formula {
-  constructor(elements = []) {
-    this.elements = elements;
+  constructor(value = []) {
+    this.value = value;
+    this.type = ELEMENT_TYPES.FORMULA;
   }
 
   // Primary functions
   getElement = (position) => {
     let foundElement = null;
-    this.elements.forEach((value, index) => {
+    this.value.forEach((value, index) => {
       if (position === index) foundElement = _.cloneDeep(value);
     });
 
@@ -21,21 +22,21 @@ class Formula {
 
   addElement = (newElement) => {
     newElement = _.cloneDeep(newElement);
-    this.elements.push(newElement);
+    this.value.push(newElement);
   };
 
   replaceElement = (newElement, position) => {
     newElement = _.cloneDeep(newElement);
-    this.elements = this.elements.map((value, index) => {
+    this.value = this.value.map((value, index) => {
       return position === index ? newElement : value;
     });
   };
 
   removeElement = (position) => {
-    this.elements = this.elements.filter((value, index) => index !== position);
+    this.value = this.value.filter((value, index) => index !== position);
   };
 
-  getNumberOfElements = () => this.elements.length;
+  getNumberOfElements = () => this.value.length;
 
   // End of the primary functions
 
@@ -59,19 +60,20 @@ class Formula {
   };
 
   getElementThroughTrail = (locationTrail = []) => {
-    let element = this.elements;
+    if (this.value.length === 0)
+      throw new CalcException("This formula has no elements.");
 
+    let element = this.value;
     locationTrail.forEach((position) => {
       element = element.getElement(position);
     });
-
     return element;
   };
 
   /* Evaluation start */
   evaluate = () => {
-    if(this.elements.length === 0) return 0;
-    let elements = _.cloneDeep(this.elements);
+    if (this.value.length === 0) return 0;
+    let elements = _.cloneDeep(this.value);
 
     elements = this.findAndExecuteAllOperationsOfTypes(
       [OPERATIONS.POTENCY],

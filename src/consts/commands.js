@@ -1,4 +1,4 @@
-import CalcException from "./../exceptions/calc-exception";
+import {CalcException} from "../exceptions";
 
 export const CLEAR_ELEMENT = "CEL";
 export const CLEAR = "CLE";
