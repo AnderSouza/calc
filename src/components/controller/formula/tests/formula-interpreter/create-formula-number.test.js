@@ -1,7 +1,7 @@
 import {assert} from "chai";
-import {createFormulaNumber} from "../functions";
-import FormulaNumber from "../formula-number";
-import {CODE_TYPES} from "./../../../../consts";
+import {createFormulaNumber} from "../../functions";
+import FormulaNumber from "../../formula-number";
+import {CODE_TYPES} from "../../../../../consts";
 
 describe("createFormulaNumber function", () => {
     it("Returns instanceof FormulaNumber.", () => {

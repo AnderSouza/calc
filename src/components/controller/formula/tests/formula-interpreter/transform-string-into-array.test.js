@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {transformStringIntoArray} from "../functions";
+import {transformStringIntoArray} from "../../functions";
 
 describe("transformStringIntoArray function", () => {
     it("Returns array of characters when passed string.", () => {

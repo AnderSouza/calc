@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {numericStringIsEmpty} from "../functions";
+import {numericStringIsEmpty} from "../../functions";
 
 describe("numericStringIsEmpty function", () => {
     it("Returns false when passed '150'.", () => {

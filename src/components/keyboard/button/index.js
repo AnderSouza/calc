@@ -22,11 +22,12 @@ const getProperStyles = (isWide, isTall, isEmpty) => {
   return styles.defaultButton;
 };
 
-const Button = ({ code, type, isWide, isTall, isEmpty, handleButtonPress }) => (
+const Button = ({ code, type, isWide, isTall, isEmpty, customClass, handleButtonPress }) => (
   <div
     onClick={() => handleButtonPress(type, code)}
-    className={getProperStyles(isWide, isTall, isEmpty)}
+    className={getProperStyles(isWide, isTall, isEmpty)+" "+customClass}
   >
+    {console.log(customClass)}
     {getChar(type, code)}
   </div>
 );

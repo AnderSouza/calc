@@ -10,68 +10,91 @@ class Formula {
     this.type = ELEMENT_TYPES.FORMULA;
   }
 
+  getThis() {
+    return this;
+  }
   // Primary functions
-  getElement = (position) => {
+  getElement(position) {
     let foundElement = null;
     this.value.forEach((value, index) => {
-      if (position === index) foundElement = _.cloneDeep(value);
+      if (position === index) foundElement = value;
     });
 
     return foundElement;
-  };
+  }
 
-  addElement = (newElement) => {
+  addElement(newElement) {
     newElement = _.cloneDeep(newElement);
     this.value.push(newElement);
-  };
+  }
 
-  replaceElement = (newElement, position) => {
+  replaceElement(newElement, position) {
     newElement = _.cloneDeep(newElement);
     this.value = this.value.map((value, index) => {
       return position === index ? newElement : value;
     });
-  };
+  }
 
-  removeElement = (position) => {
+  removeElement(position) {
     this.value = this.value.filter((value, index) => index !== position);
-  };
+  }
 
-  getNumberOfElements = () => this.value.length;
+  getNumberOfElements() {
+    return this.value.length;
+  }
 
   // End of the primary functions
 
-  getPositionOfTheLastElement = () => this.getNumberOfElements() - 1;
+  getIsEmpty() {
+    return this.getNumberOfElements() === 0;
+  }
 
-  getIsEmpty = () => this.getNumberOfElements() === 0;
+  getLastElement() {
+    let numberOfElements = this.getNumberOfElements();
+    if (numberOfElements === 0) return null;
 
-  getLastElement = () => {
-    const position = this.getPositionOfTheLastElement();
+    const position = numberOfElements - 1;
     return this.getElement(position);
-  };
+  }
 
-  removeLastElement = () => {
-    const position = this.getPositionOfTheLastElement();
+  removeLastElement() {
+    let numberOfElements = this.getNumberOfElements();
+    if (numberOfElements === 0)
+      throw new CalcException(
+        "Cannot remove last element because the formula is empty."
+      );
+
+    const position = numberOfElements - 1;
     this.removeElement(position);
-  };
+  }
 
-  replaceLastElement = (newElement) => {
-    const position = this.getPositionOfTheLastElement();
+  replaceLastElement(newElement) {
+    let numberOfElements = this.getNumberOfElements();
+    if (numberOfElements === 0)
+      throw new CalcException(
+        "Cannot replace last element because the formula is empty."
+      );
+
+    const position = numberOfElements - 1;
     this.replaceElement(position, newElement);
-  };
+  }
 
-  getElementThroughTrail = (locationTrail = []) => {
+  getElementThroughTrail(locationTrail = []) {
+    locationTrail = _.cloneDeep(locationTrail);
+
+    if (locationTrail.length === 0) return this;
     if (this.value.length === 0)
       throw new CalcException("This formula has no elements.");
 
-    let element = this.value;
+    let element = this.getElement(locationTrail.pop());
     locationTrail.forEach((position) => {
       element = element.getElement(position);
     });
     return element;
-  };
+  }
 
   /* Evaluation start */
-  evaluate = () => {
+  evaluate() {
     if (this.value.length === 0) return 0;
     let elements = _.cloneDeep(this.value);
 
@@ -87,21 +110,20 @@ class Formula {
       [OPERATIONS.ADDITION, OPERATIONS.SUBTRACTION],
       elements
     );
-
     return elements.pop().evaluate();
-  };
+  }
 
-  findAndExecuteAllOperationsOfTypes = (operationTypes, elements) => {
-    let operationIndex = null;
-    let firstNumber = null;
-    let secondNumber = null;
-    let operation = null;
+  findAndExecuteAllOperationsOfTypes(operationTypes, elements) {
+    let operationIndex = undefined;
+    let firstNumber = undefined;
+    let secondNumber = undefined;
+    let operation = undefined;
 
-    while (this.thereAreRemainingOperationsOfTypes(operationTypes, elements)) {
-      operationIndex = null;
-      firstNumber = null;
-      secondNumber = null;
-      operation = null;
+    for (let i = 0; i < 10; i++) {
+      operationIndex = undefined;
+      firstNumber = undefined;
+      secondNumber = undefined;
+      operation = undefined;
 
       for (let x = 0; x < elements.length; x++) {
         if (
@@ -116,7 +138,6 @@ class Formula {
           break;
         }
       }
-
       if (
         firstNumber !== undefined &&
         secondNumber !== undefined &&
@@ -137,14 +158,19 @@ class Formula {
           elements[operationIndex] = this.createNumber(-value);
         }
         elements.splice(operationIndex + 1, 1);
+      } else if (firstNumber !== undefined && operation !== undefined) {
+        elements[operationIndex - 1] = firstNumber;
+        elements.splice(operationIndex, 1);
+      } else {
+        break;
       }
     }
 
     return elements;
-  };
+  }
 
-  executeOperation = (operation, firstNumber, secondNumber) => {
-    switch (operation) {
+  executeOperation(operation, firstNumber, secondNumber) {
+    switch (operation.value) {
       case OPERATIONS.POTENCY:
         return this.createNumber(
           this.evaluatePotency(firstNumber, secondNumber)
@@ -168,40 +194,47 @@ class Formula {
       default:
         throw new CalcException("Unknown operation.");
     }
-  };
+  }
 
-  evaluatePotency = (firstNumber, secondNumber) =>
-    Math.pow(firstNumber.evaluate(), secondNumber.evaluate());
+  evaluatePotency(firstNumber, secondNumber) {
+    return Math.pow(firstNumber.evaluate(), secondNumber.evaluate());
+  }
 
-  evaluateMultiplication = (firstNumber, secondNumber) =>
-    firstNumber.evaluate() * secondNumber.evaluate();
+  evaluateMultiplication(firstNumber, secondNumber) {
+    return firstNumber.evaluate() * secondNumber.evaluate();
+  }
 
-  evaluateDivision = (firstNumber, secondNumber) =>
-    firstNumber.evaluate() / secondNumber.evaluate();
+  evaluateDivision(firstNumber, secondNumber) {
+    return firstNumber.evaluate() / secondNumber.evaluate();
+  }
 
-  evaluateAddition = (firstNumber, secondNumber) =>
-    firstNumber.evaluate() + secondNumber.evaluate();
+  evaluateAddition(firstNumber, secondNumber) {
+    return firstNumber.evaluate() + secondNumber.evaluate();
+  }
 
-  evaluateSubtraction = (firstNumber, secondNumber) =>
-    firstNumber.evaluate() - secondNumber.evaluate();
+  evaluateSubtraction(firstNumber, secondNumber) {
+    return firstNumber.evaluate() - secondNumber.evaluate();
+  }
 
-  thereAreRemainingOperationsOfTypes = (operationTypes, array) => {
+  thereAreRemainingOperationsOfTypes(operationTypes, array) {
     let found = false;
     operationTypes.forEach((type) => {
       if (this.thereAreRemainingOperationsOfType(type, array)) found = true;
     });
     return found;
-  };
+  }
 
-  thereAreRemainingOperationsOfType = (operationType, array) => {
+  thereAreRemainingOperationsOfType(operationType, array) {
     let found = false;
     array.forEach((element) => {
-      if (element.type === operationType) found = true;
+      if (element.value === operationType) found = true;
     });
     return found;
-  };
+  }
 
-  createNumber = (number) => new FormulaNumber(number);
+  createNumber(number) {
+    return new FormulaNumber(number);
+  }
 }
 
 export default Formula;

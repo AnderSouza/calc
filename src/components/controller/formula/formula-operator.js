@@ -8,7 +8,8 @@ class FormulaOperator {
   }
 
   evaluate() {
-    throw new CalcException("Trying to evaluate an operator.");
+    return 0;
+    // throw new CalcException("Trying to evaluate an operator.");
   }
 }
 

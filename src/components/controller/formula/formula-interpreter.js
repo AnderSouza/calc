@@ -5,8 +5,10 @@ import {
   goUpOnLocationTrail,
   processNumber,
   processOperation,
+  createNestedFormulaThroughLocationTrail
 } from "./functions";
-import { OPERATIONS } from "./../../../consts";
+import { NUMBERS, OPERATIONS } from "./../../../consts";
+import {CalcException} from "./../../../exceptions/index";
 
 const FormulaInterpreter = (formulaText) => {
   let arrayOfFormulaCharacters = transformStringIntoArray(formulaText);
@@ -37,6 +39,7 @@ const FormulaInterpreter = (formulaText) => {
         break;
       case OPERATIONS.OPENING_PARENTHESIS_CHAR:
         locationTrail = goDownOnLocationTrail(locationTrail, formula);
+        formula = createNestedFormulaThroughLocationTrail(formula, locationTrail);
         break;
       case OPERATIONS.CLOSING_PARENTHESIS_CHAR:
         locationTrail = goUpOnLocationTrail(locationTrail);

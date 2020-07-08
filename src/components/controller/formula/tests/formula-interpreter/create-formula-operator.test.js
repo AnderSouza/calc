@@ -1,7 +1,7 @@
 import {assert} from "chai";
-import {createFormulaOperator} from "../functions";
-import FormulaOperator from "../formula-operator";
-import {CODE_TYPES, OPERATIONS} from "./../../../../consts";
+import {createFormulaOperator} from "../../functions";
+import FormulaOperator from "../../formula-operator";
+import {CODE_TYPES, OPERATIONS} from "../../../../../consts";
 
 describe("createFormulaOperator function", () => {
     it("Returns instanceof FormulaOperator.", () => {

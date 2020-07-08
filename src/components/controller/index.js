@@ -6,19 +6,18 @@ import {
   getCurrentNumberFromFormulaText,
   handleNumberCode,
   handleOperationCode,
-  handleCommandCode
+  handleCommandCode,
+  handleKeyPress,
 } from "./functions";
-import { CODE_TYPES } from "./../../consts";
-import {CalcException} from "../../exceptions";
+import { NUMBERS, CODE_TYPES, OPERATIONS, COMMANDS } from "./../../consts";
+import { CalcException } from "../../exceptions";
 
 const Controller = () => {
   const [formulaText, setFormulaText] = useState("");
   const [result, setResult] = useState("");
 
   useEffect(() => {
-    console.log("formulaText", formulaText);
-    console.log("ELEMENTS", formulaInterpreter(formulaText).elements);
-    const evaluation = "15";
+    const evaluation = formulaInterpreter(formulaText).evaluate();
     setResult(evaluation);
   }, [formulaText]);
 
@@ -39,21 +38,17 @@ const Controller = () => {
           setFormulaText(newFormulaText);
           break;
         default:
-          throw new CalcException("Unknown code type: "+type);
+          throw new CalcException("Unknown code type: " + type);
       }
     } catch (exception) {
       console.error(exception.message);
     }
   };
 
+  window.onkeypress = handleKeyPress(handleButtonPress);
+  
   return (
     <div>
-      {"FormulaText: " + formulaText}
-      <br />
-      {"Result: " + result}
-      <br />
-      {"CurrentNumber: " + getCurrentNumberFromFormulaText(formulaText)}
-      <br />
       <div>
         <Display
           formula={formulaText}

@@ -9,5 +9,24 @@
     border-radius: 8px;
     margin-top: 10px;
     background-color: lightsteelblue;
+    color: #666666;
+}
+
+.darkBlue {
+    background: rgb(156, 176, 202);
+}
+
+.blue {
+    background-color: steelblue;
+    color: white;
+}
+
+.red {
+    background-color: tomato;
+    color: white;
+}
+
+.orange {
+    background-color: darkorange;
     color: white;
 }

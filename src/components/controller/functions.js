@@ -1,4 +1,4 @@
-import { OPERATIONS, NUMBERS, COMMANDS } from "./../../consts";
+import { OPERATIONS, NUMBERS, COMMANDS, CODE_TYPES } from "./../../consts";
 import { CalcException } from "../../exceptions";
 
 export const charIsANumber = (char) => {
@@ -74,11 +74,11 @@ export const thereAreUnclosedParenthesis = (formulaText) => {
   let numberOfOpeningParenthesis = 0;
   let numberOfClosingParenthesis = 0;
 
-  for(let i = 0;i<formulaText.length;i++) {
-    if(formulaText.charAt(i) === OPERATIONS.OPENING_PARENTHESIS_CHAR) {
+  for (let i = 0; i < formulaText.length; i++) {
+    if (formulaText.charAt(i) === OPERATIONS.OPENING_PARENTHESIS_CHAR) {
       numberOfOpeningParenthesis++;
     }
-    if(formulaText.charAt(i) === OPERATIONS.CLOSING_PARENTHESIS_CHAR) {
+    if (formulaText.charAt(i) === OPERATIONS.CLOSING_PARENTHESIS_CHAR) {
       numberOfClosingParenthesis++;
     }
   }
@@ -228,4 +228,61 @@ export const handleCommandCode = (code, formulaText) => {
         throw new CalcException("Unknown command: " + code);
     }
   }
+};
+
+export const handleKeyPress = (handleButtonPress) => {
+  return (event) => {
+    switch (event.keyCode) {
+      case 13:
+        handleButtonPress(CODE_TYPES.COMMAND, COMMANDS.RESULT);
+        break;
+      case 43:
+        handleButtonPress(CODE_TYPES.OPERATION, OPERATIONS.ADDITION);
+        break;
+      case 44:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.POINT);
+        break;
+      case 45:
+        handleButtonPress(CODE_TYPES.OPERATION, OPERATIONS.SUBTRACTION);
+        break;
+      case 42:
+        handleButtonPress(CODE_TYPES.OPERATION, OPERATIONS.MULTIPLICATION);
+        break;
+      case 47:
+        handleButtonPress(CODE_TYPES.OPERATION, OPERATIONS.DIVISION);
+        break;
+      case 48:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.ZERO);
+        break;
+      case 49:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.ONE);
+        break;
+      case 50:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.TWO);
+        break;
+      case 51:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.THREE);
+        break;
+      case 52:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.FOUR);
+        break;
+      case 53:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.FIVE);
+        break;
+      case 54:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.SIX);
+        break;
+      case 55:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.SEVEN);
+        break;
+      case 56:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.EIGHT);
+        break;
+      case 57:
+        handleButtonPress(CODE_TYPES.NUMBER, NUMBERS.NINE);
+        break;
+      default:
+        break;
+    }
+  };
 };
