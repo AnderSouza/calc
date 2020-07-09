@@ -10,26 +10,25 @@
     text-align: center;
     line-height: 50px;
     cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px grey;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px grey;
 }
 
 .defaultButton:hover {
     opacity: 0.70;
 }
 .defaultButton:active {
-    box-shadow: inset 0px 0px 3px grey;
+    box-shadow: inset 0px 0px 6px grey;
 }
 
 .wideButton {
     box-sizing:inherit;
     text-align: center;
     line-height: 50px;
-    grid-column: 1 / span 2;
-    grid-row: 6 / span 1;
+    grid-column-end: span 2;
     cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px grey;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px grey;
 }
 
 .wideButton:hover {
@@ -37,18 +36,17 @@
 }
 
 .wideButton:active {
-    box-shadow: inset 0px 0px 3px grey;
+    box-shadow: inset 0px 0px 6px grey;
 }
 
 .tallButton {
     box-sizing:inherit;
     text-align: center;
     line-height: 100px;
-    grid-column: 4 / span 1;
-    grid-row: 5 / -1;
+    grid-row: span 2;
     cursor: pointer;
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px grey;
+    border-radius: 4px;
+    box-shadow: 0px 0px 6px grey;
 }
 
 .tallButton:hover {
@@ -56,5 +54,5 @@
 }
 
 .tallButton:active {
-    box-shadow: inset 0px 0px 3px grey;
+    box-shadow: inset 0px 0px 6px grey;
 }

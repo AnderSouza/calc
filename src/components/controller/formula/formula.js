@@ -95,7 +95,7 @@ class Formula {
 
   /* Evaluation start */
   evaluate() {
-    if (this.value.length === 0) return 0;
+    if (this.value.length === 0) return "0";
     let elements = _.cloneDeep(this.value);
 
     elements = this.findAndExecuteAllOperationsOfTypes(

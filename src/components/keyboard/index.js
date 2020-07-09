@@ -18,13 +18,20 @@ const Keyboard = ({ handleButtonPress }) => {
         type={CODE_TYPES.COMMAND}
         customClass={styles.orange}
       />
-      <Button handleButtonPress={handleButtonPress} isEmpty />
       <Button
         handleButtonPress={handleButtonPress}
         code={OPERATIONS.DIVISION}
         type={CODE_TYPES.OPERATION}
         customClass={styles.blue}
       />
+
+      <Button
+        handleButtonPress={handleButtonPress}
+        code={OPERATIONS.MULTIPLICATION}
+        type={CODE_TYPES.OPERATION}
+        customClass={styles.blue}
+      />
+
       <Button
         handleButtonPress={handleButtonPress}
         code={OPERATIONS.OPENING_PARENTHESIS}
@@ -41,14 +48,16 @@ const Keyboard = ({ handleButtonPress }) => {
         handleButtonPress={handleButtonPress}
         code={OPERATIONS.POTENCY}
         type={CODE_TYPES.OPERATION}
-        customClass={styles.darkBlue}
+        customClass={styles.blue}
       />
+
       <Button
         handleButtonPress={handleButtonPress}
-        code={OPERATIONS.MULTIPLICATION}
+        code={OPERATIONS.SUBTRACTION}
         type={CODE_TYPES.OPERATION}
         customClass={styles.blue}
       />
+
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.SEVEN}
@@ -69,9 +78,10 @@ const Keyboard = ({ handleButtonPress }) => {
       />
       <Button
         handleButtonPress={handleButtonPress}
-        code={OPERATIONS.SUBTRACTION}
+        code={OPERATIONS.ADDITION}
         type={CODE_TYPES.OPERATION}
         customClass={styles.blue}
+        isTall
       />
       <Button
         handleButtonPress={handleButtonPress}
@@ -91,12 +101,7 @@ const Keyboard = ({ handleButtonPress }) => {
         type={CODE_TYPES.NUMBER}
         customClass={styles.darkBlue}
       />
-      <Button
-        handleButtonPress={handleButtonPress}
-        code={OPERATIONS.ADDITION}
-        type={CODE_TYPES.OPERATION}
-        customClass={styles.blue}
-      />
+
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.ONE}

@@ -7,7 +7,7 @@ class FormulaNumber {
   }
 
   evaluate() {
-    return parseInt(this.value);
+    return parseFloat(this.value);
   }
 }
 

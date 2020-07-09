@@ -7,23 +7,29 @@ import {
   handleNumberCode,
   handleOperationCode,
   handleCommandCode,
-  handleKeyPress,
 } from "./functions";
-import { NUMBERS, CODE_TYPES, OPERATIONS, COMMANDS } from "./../../consts";
+import { CODE_TYPES, COMMANDS } from "./../../consts";
 import { CalcException } from "../../exceptions";
+import KeyboardKeysManager from "./keyboard-keys-manager";
 
 const Controller = () => {
   const [formulaText, setFormulaText] = useState("");
   const [result, setResult] = useState("");
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     const evaluation = formulaInterpreter(formulaText).evaluate();
     setResult(evaluation);
   }, [formulaText]);
 
+  useEffect(() => {
+    showResult && setFormulaText(result.toString());
+  }, [showResult]);
+
   const handleButtonPress = (type, code) => {
     try {
       let newFormulaText;
+      setShowResult(false);
       switch (type) {
         case CODE_TYPES.NUMBER:
           newFormulaText = handleNumberCode(code, formulaText);
@@ -36,6 +42,7 @@ const Controller = () => {
         case CODE_TYPES.COMMAND:
           newFormulaText = handleCommandCode(code, formulaText);
           setFormulaText(newFormulaText);
+          if (code === COMMANDS.RESULT) setShowResult(true);
           break;
         default:
           throw new CalcException("Unknown code type: " + type);
@@ -45,15 +52,21 @@ const Controller = () => {
     }
   };
 
-  window.onkeypress = handleKeyPress(handleButtonPress);
-  
+  window.onkeydown = (event) => KeyboardKeysManager(event, handleButtonPress);
+  window.onkeyup = (event) => KeyboardKeysManager(event, handleButtonPress);
+
   return (
     <div>
       <div>
+        {console.clear()}
+        {console.log("formulaText", formulaText)}
+        {console.log("result", result)}
+        {console.log("showResult", showResult)}
         <Display
           formula={formulaText}
           result={result}
           currentNumber={getCurrentNumberFromFormulaText(formulaText)}
+          showResult={showResult}
         />
         <Keyboard handleButtonPress={handleButtonPress} />
       </div>

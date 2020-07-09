@@ -1,32 +1,32 @@
 .keyboard {
-    padding: 5px;
-    display: grid;
-    box-sizing: border-box;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: 50px 50px 50px 50px 50px 50px;
-    justify-content: space-around;
-    gap: 10px 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    background-color: lightsteelblue;
-    color: #666666;
+  padding: 5px;
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 50px 50px 50px 50px 50px 50px;
+  justify-content: space-around;
+  gap: 10px 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  background-color: rgb(225, 225, 225);
+  color: #555555;
 }
 
 .darkBlue {
-    background: rgb(156, 176, 202);
+  background: rgb(156, 176, 202);
 }
 
 .blue {
-    background-color: steelblue;
-    color: white;
+  background-color: steelblue;
+  color: white;
 }
 
 .red {
-    background-color: tomato;
-    color: white;
+  background-color: tomato;
+  color: white;
 }
 
 .orange {
-    background-color: darkorange;
-    color: white;
+  background-color: darkorange;
+  color: white;
 }

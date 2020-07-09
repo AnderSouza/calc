@@ -27,7 +27,6 @@ const Button = ({ code, type, isWide, isTall, isEmpty, customClass, handleButton
     onClick={() => handleButtonPress(type, code)}
     className={getProperStyles(isWide, isTall, isEmpty)+" "+customClass}
   >
-    {console.log(customClass)}
     {getChar(type, code)}
   </div>
 );

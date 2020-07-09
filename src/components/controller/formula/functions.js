@@ -92,5 +92,5 @@ export const createNestedFormulaThroughLocationTrail = (formula, locationTrail) 
   locationTrail.pop();
   const element = formula.getElementThroughTrail(locationTrail);
   element.addElement(new Formula());
-  return element;
+  return formula;
 };
