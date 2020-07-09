@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { Display, Keyboard } from "./../index";
 import formulaInterpreter from "./formula/formula-interpreter";
 import {
@@ -60,6 +59,7 @@ const Controller = () => {
       <div>
         {console.clear()}
         {console.log("formulaText", formulaText)}
+        {console.log("currentNumber", getCurrentNumberFromFormulaText(formulaText))}
         {console.log("result", result)}
         {console.log("showResult", showResult)}
         <Display

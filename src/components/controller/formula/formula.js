@@ -10,16 +10,12 @@ class Formula {
     this.type = ELEMENT_TYPES.FORMULA;
   }
 
-  getThis() {
-    return this;
-  }
   // Primary functions
   getElement(position) {
     let foundElement = null;
     this.value.forEach((value, index) => {
-      if (position === index) foundElement = value;
+      if (position == index) foundElement = value;
     });
-
     return foundElement;
   }
 
@@ -86,7 +82,7 @@ class Formula {
     if (this.value.length === 0)
       throw new CalcException("This formula has no elements.");
 
-    let element = this.getElement(locationTrail.pop());
+    let element = this.getElement(locationTrail.shift());
     locationTrail.forEach((position) => {
       element = element.getElement(position);
     });

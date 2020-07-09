@@ -130,6 +130,7 @@ export const handleNumberCode = (code, formulaText) => {
       let currentNumber = getCurrentNumberFromFormulaText(formulaText);
       if (
         isEmpty(formulaText) ||
+        isEmpty(currentNumber) || 
         numericStringAlreadyHasAPoint(currentNumber)
       ) {
         throw new CalcException("Invalid position for a point.");
