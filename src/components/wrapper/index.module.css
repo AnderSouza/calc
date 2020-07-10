@@ -1,6 +1,5 @@
 .wrapper {
-  max-width: 400px;
-  min-width: 250px;
+  width: 250px;
   margin: 0 auto;
   padding: 5px;
   background-color: rgb(245,245,245);
