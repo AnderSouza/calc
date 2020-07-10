@@ -9,6 +9,7 @@
   box-sizing: inherit;
   text-align: center;
   line-height: 50px;
+  font-size: 1.25em;
   cursor: pointer;
   border-radius: 4px;
 }
@@ -24,6 +25,7 @@
   box-sizing: inherit;
   text-align: center;
   line-height: 50px;
+  font-size: 1.25em;
   grid-column-end: span 2;
   cursor: pointer;
   border-radius: 4px;
@@ -41,6 +43,7 @@
   box-sizing: inherit;
   text-align: center;
   line-height: 100px;
+  font-size: 1.25em;
   grid-row: span 2;
   cursor: pointer;
   border-radius: 4px;

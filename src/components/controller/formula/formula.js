@@ -2,6 +2,7 @@ import _ from "lodash";
 import { ELEMENT_TYPES } from "../../../consts";
 import OPERATIONS from "../../../consts/operations";
 import FormulaNumber from "./formula-number";
+import { elementIsAFormula } from "./functions";
 import { CalcException } from "../../../exceptions";
 
 class Formula {
@@ -41,7 +42,7 @@ class Formula {
 
   // End of the primary functions
 
-  getIsEmpty() {
+  isEmpty() {
     return this.getNumberOfElements() === 0;
   }
 
@@ -91,7 +92,8 @@ class Formula {
 
   /* Evaluation start */
   evaluate() {
-    if (this.value.length === 0) return "0";
+    if (this.value.length === 0) return 0;
+
     let elements = _.cloneDeep(this.value);
 
     elements = this.findAndExecuteAllOperationsOfTypes(
@@ -166,50 +168,99 @@ class Formula {
   }
 
   executeOperation(operation, firstNumber, secondNumber) {
+    let result;
     switch (operation.value) {
       case OPERATIONS.POTENCY:
-        return this.createNumber(
-          this.evaluatePotency(firstNumber, secondNumber)
-        );
+        result = this.evaluatePotency(firstNumber, secondNumber);
+        return this.createNumber(result.toFixed(2));
       case OPERATIONS.MULTIPLICATION:
-        return this.createNumber(
-          this.evaluateMultiplication(firstNumber, secondNumber)
-        );
+        result = this.evaluateMultiplication(firstNumber, secondNumber);
+        return this.createNumber(result.toFixed(2));
       case OPERATIONS.DIVISION:
-        return this.createNumber(
-          this.evaluateDivision(firstNumber, secondNumber)
-        );
+        result = this.evaluateDivision(firstNumber, secondNumber);
+        return this.createNumber(result.toFixed(2));
       case OPERATIONS.ADDITION:
-        return this.createNumber(
-          this.evaluateAddition(firstNumber, secondNumber)
-        );
+        console.log("firstNumber", firstNumber);
+        console.log("secondNumber", secondNumber);
+        result = this.evaluateAddition(firstNumber, secondNumber);
+        console.log(result);
+        return this.createNumber(result.toFixed(2));
       case OPERATIONS.SUBTRACTION:
-        return this.createNumber(
-          this.evaluateSubtraction(firstNumber, secondNumber)
-        );
+        result = this.evaluateSubtraction(firstNumber, secondNumber);
+        return this.createNumber(result.toFixed(2));
       default:
         throw new CalcException("Unknown operation.");
     }
   }
 
   evaluatePotency(firstNumber, secondNumber) {
-    return Math.pow(firstNumber.evaluate(), secondNumber.evaluate());
+    firstNumber =
+      elementIsAFormula(firstNumber) && firstNumber.isEmpty()
+        ? 1
+        : firstNumber.evaluate();
+
+    secondNumber =
+      elementIsAFormula(secondNumber) && secondNumber.isEmpty()
+        ? 1
+        : secondNumber.evaluate();
+
+    return Math.pow(firstNumber, secondNumber);
   }
 
   evaluateMultiplication(firstNumber, secondNumber) {
-    return firstNumber.evaluate() * secondNumber.evaluate();
+    firstNumber =
+      elementIsAFormula(firstNumber) && firstNumber.isEmpty()
+        ? 1
+        : firstNumber.evaluate();
+
+    secondNumber =
+      elementIsAFormula(secondNumber) && secondNumber.isEmpty()
+        ? 1
+        : secondNumber.evaluate();
+
+    return firstNumber * secondNumber;
   }
 
   evaluateDivision(firstNumber, secondNumber) {
-    return firstNumber.evaluate() / secondNumber.evaluate();
+    firstNumber =
+      elementIsAFormula(firstNumber) && firstNumber.isEmpty()
+        ? 1
+        : firstNumber.evaluate();
+
+    secondNumber =
+      elementIsAFormula(secondNumber) && secondNumber.isEmpty()
+        ? 1
+        : secondNumber.evaluate();
+
+    return firstNumber / secondNumber;
   }
 
   evaluateAddition(firstNumber, secondNumber) {
-    return firstNumber.evaluate() + secondNumber.evaluate();
+    firstNumber =
+      elementIsAFormula(firstNumber) && firstNumber.isEmpty()
+        ? 0
+        : firstNumber.evaluate();
+
+    secondNumber =
+      elementIsAFormula(secondNumber) && secondNumber.isEmpty()
+        ? 0
+        : secondNumber.evaluate();
+
+    return firstNumber + secondNumber;
   }
 
   evaluateSubtraction(firstNumber, secondNumber) {
-    return firstNumber.evaluate() - secondNumber.evaluate();
+    firstNumber =
+      elementIsAFormula(firstNumber) && firstNumber.isEmpty()
+        ? 0
+        : firstNumber.evaluate();
+
+    secondNumber =
+      elementIsAFormula(secondNumber) && secondNumber.isEmpty()
+        ? 0
+        : secondNumber.evaluate();
+
+    return firstNumber - secondNumber;
   }
 
   thereAreRemainingOperationsOfTypes(operationTypes, array) {
@@ -231,6 +282,8 @@ class Formula {
   createNumber(number) {
     return new FormulaNumber(number);
   }
+
+  isFormulaE;
 }
 
 export default Formula;

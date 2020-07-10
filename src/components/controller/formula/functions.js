@@ -2,10 +2,18 @@ import _ from "lodash";
 import { ELEMENT_TYPES, NUMBERS, OPERATIONS } from "./../../../consts";
 import FormulaNumber from "./formula-number";
 import FormulaOperator from "./formula-operator";
-import { numericStringAlreadyHasAPoint, charIsANumber, charIsAnOperation, charIsAPoint } from "./../functions";
+import {
+  numericStringAlreadyHasAPoint,
+  charIsANumber,
+  charIsAnOperation,
+  charIsAPoint,
+} from "./../functions";
 import { CalcException } from "./../../../exceptions";
 import Formula from "./formula";
 
+export const elementIsAFormula = (element) =>
+  element.type === ELEMENT_TYPES.FORMULA;
+  
 export const transformStringIntoArray = (string) => string.split("");
 
 export const createFormulaNumber = (number) => new FormulaNumber(number);
@@ -35,28 +43,29 @@ export const goUpOnLocationTrail = (locationTrail) => {
 };
 
 export const processNumber = (char, formula, locationTrail) => {
-  if(!(charIsANumber(char) || charIsAPoint(char))) {
+  if (!(charIsANumber(char) || charIsAPoint(char))) {
     throw new CalcException("The char is neither a point or a number.");
   }
   let lastElement = formula
     .getElementThroughTrail(locationTrail)
     .getLastElement();
   if (lastElement && lastElement.type === ELEMENT_TYPES.NUMBER) {
-    if (charIsAPoint(char) && numericStringAlreadyHasAPoint(lastElement.value)) {
+    if (
+      charIsAPoint(char) &&
+      numericStringAlreadyHasAPoint(lastElement.value)
+    ) {
       throw new CalcException(
         "Cannot insert point because the number already has one."
       );
-    } 
+    }
     lastElement.value = lastElement.value.concat(char);
     formula
-    .getElementThroughTrail(locationTrail)
-    .replaceLastElement(lastElement);
+      .getElementThroughTrail(locationTrail)
+      .replaceLastElement(lastElement);
   } else {
     if (charIsAPoint(char)) {
-      throw new CalcException(
-        "Cannot start a number with a point."
-      );
-    } 
+      throw new CalcException("Cannot start a number with a point.");
+    }
     const number = createFormulaNumber(char);
     formula.getElementThroughTrail(locationTrail).addElement(number);
   }
@@ -64,7 +73,7 @@ export const processNumber = (char, formula, locationTrail) => {
 };
 
 export const processOperation = (char, formula, locationTrail) => {
-  if(!charIsAnOperation(char)) {
+  if (!charIsAnOperation(char)) {
     throw new CalcException("The char is not an operation.");
   }
   const code = OPERATIONS.getOperationCodeFromChar(char);
@@ -77,13 +86,16 @@ export const processOperation = (char, formula, locationTrail) => {
 export function getElement(position) {
   let foundElement = null;
   this.value.forEach((value, index) => {
-    if (position === index) foundElement =value;
+    if (position === index) foundElement = value;
   });
 
   return foundElement;
-};
+}
 
-export const createNestedFormulaThroughLocationTrail = (formula, locationTrail) => {
+export const createNestedFormulaThroughLocationTrail = (
+  formula,
+  locationTrail
+) => {
   if (formula.value.length === 0)
     throw new CalcException("The formula has no elements.");
 

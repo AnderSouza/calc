@@ -10,6 +10,7 @@ const getClassName = (showError) =>
 
 const Display = ({ result, formula, error, showResult, showError }) => {
   return (
+    <React.Fragment>
     <div className={getClassName(showError)}>
       <div className={styles.topDisplay}>
         {showError ? "Entrada inválida." : format(result)}
@@ -18,6 +19,8 @@ const Display = ({ result, formula, error, showResult, showError }) => {
         {showResult ? format(result) : format(formula)}
       </div>
     </div>
+    <hr/>
+    </React.Fragment>
   );
 };
 

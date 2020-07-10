@@ -10,7 +10,7 @@ export const CLOSING_PARENTHESIS = "CLP";
 
 export const ADDITION_CHAR = "+";
 export const SUBTRACTION_CHAR = "-";
-export const MULTIPLICATION_CHAR = "*";
+export const MULTIPLICATION_CHAR = "x";
 export const DIVISION_CHAR = "/";
 export const POTENCY_CHAR = "^";
 export const OPENING_PARENTHESIS_CHAR = "(";

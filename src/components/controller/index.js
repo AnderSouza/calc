@@ -35,19 +35,31 @@ const Controller = () => {
       setShowError(false);
       switch (type) {
         case CODE_TYPES.NUMBER:
-          newFormulaText = handleNumberCode(code, formulaText);
-          setFormulaText(newFormulaText);
+          try {
+            newFormulaText = handleNumberCode(code, formulaText);
+            setFormulaText(newFormulaText);
+          } catch (exception) {
+            throw exception;
+          }
+
           break;
         case CODE_TYPES.OPERATION:
-          newFormulaText = handleOperationCode(code, formulaText);
-          setFormulaText(newFormulaText);
+          try {
+            newFormulaText = handleOperationCode(code, formulaText);
+            setFormulaText(newFormulaText);
+          } catch (exception) {
+            throw exception;
+          }
+
           break;
         case CODE_TYPES.COMMAND:
           try {
             newFormulaText = handleCommandCode(code, formulaText);
             setFormulaText(newFormulaText);
             if (code === COMMANDS.RESULT) setShowResult(true);
-          } catch (exception) {}
+          } catch (exception) {
+            console.error(exception.message);
+          }
 
           break;
         default:

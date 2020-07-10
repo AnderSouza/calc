@@ -181,9 +181,11 @@ export const handleOperationCode = (code, formulaText) => {
         throw new CalcException(
           "Cannot insert this operation at this position."
         );
-      }
-      if (lastCharIsAnOperation(formulaText)) {
-        if (penultimateCharIsAOpeningParenthesis(formulaText)) {
+      } else if (lastCharIsAnOperation(formulaText)) {
+        if (
+          formulaText.length === 1 ||
+          penultimateCharIsAOpeningParenthesis(formulaText)
+        ) {
           throw new CalcException(
             "Cannot insert this operation at this position."
           );
