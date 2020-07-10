@@ -8,12 +8,12 @@
   gap: 10px 10px;
   border-radius: 4px;
   margin-top: 10px;
-  background-color: rgb(225, 225, 225);
-  color: #555555;
+  background-color: rgb(245,245,245);
+  color: #333333;
 }
 
 .darkBlue {
-  background: rgb(156, 176, 202);
+  background: rgb(245,245,245);
 }
 
 .blue {

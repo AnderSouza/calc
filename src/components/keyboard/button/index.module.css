@@ -1,58 +1,58 @@
 .emptyButton {
-    box-sizing:inherit;
-    visibility: hidden;
-    text-align: center;
-    line-height: 50px;
+  box-sizing: inherit;
+  visibility: hidden;
+  text-align: center;
+  line-height: 50px;
 }
 
 .defaultButton {
-    box-sizing:inherit;
-    text-align: center;
-    line-height: 50px;
-    cursor: pointer;
-    border-radius: 4px;
-    box-shadow: 0px 0px 6px grey;
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px rgb(40, 40, 40);
 }
 
 .defaultButton:hover {
-    opacity: 0.70;
+  opacity: 1;
 }
 .defaultButton:active {
-    box-shadow: inset 0px 0px 6px grey;
+  box-shadow: inset 0px 0px 8px grey;
 }
 
 .wideButton {
-    box-sizing:inherit;
-    text-align: center;
-    line-height: 50px;
-    grid-column-end: span 2;
-    cursor: pointer;
-    border-radius: 4px;
-    box-shadow: 0px 0px 6px grey;
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 50px;
+  grid-column-end: span 2;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px rgb(40, 40, 40);
 }
 
 .wideButton:hover {
-    opacity: 0.70;
+  opacity: 1;
 }
 
 .wideButton:active {
-    box-shadow: inset 0px 0px 6px grey;
+  box-shadow: inset 0px 0px 8px grey;
 }
 
 .tallButton {
-    box-sizing:inherit;
-    text-align: center;
-    line-height: 100px;
-    grid-row: span 2;
-    cursor: pointer;
-    border-radius: 4px;
-    box-shadow: 0px 0px 6px grey;
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 100px;
+  grid-row: span 2;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 1px 1px 3px rgb(40, 40, 40);
 }
 
 .tallButton:hover {
-    opacity: 0.70;
+  opacity: 1;
 }
 
 .tallButton:active {
-    box-shadow: inset 0px 0px 6px grey;
+  box-shadow: inset 0px 0px 8px grey;
 }
