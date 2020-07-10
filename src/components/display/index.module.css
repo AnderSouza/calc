@@ -1,28 +1,36 @@
 .display {
-  padding: 5px;
-  height: 80px;
+  padding: 5px 5px 0px 5px;
+  height: 85px;
   box-sizing: border-box;
   border-radius: 4px;
-  background-color: rgb(245,245,245);
+  background-color: rgb(245, 245, 245);
+  border: solid rgb(245, 245, 245) 1px;
   text-align: right;
   color: #555555;
-  box-shadow: 0px 0px 4px grey;
+  box-shadow: 0px 0px 2px grey;
 }
-
 .topDisplay {
   height: 35px;
   line-height: 25px;
   box-sizing: inherit;
   border-radius: inherit;
   padding: 5px;
-  font-size: 1.7em;
+  font-size: 1.25em;
 }
 
 .bottomDisplay {
-  height: 35px;
+  height: 45px;
   line-height: 25px;
   box-sizing: inherit;
   border-radius: inherit;
   padding: 5px;
-  font-size: 1.3em;
+  font-size: 1.5em;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.error {
+  /* border: solid tomato 1px; */
+  background: rgba(255,99,71, 0.3);
+  color: black;
 }

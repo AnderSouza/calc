@@ -43,6 +43,25 @@ export const charIsAPoint = (char) => char === NUMBERS.POINT_CHAR;
 export const charIsAParenthesis = (char) =>
   charIsAOpeningParenthesis(char) || charIsAClosingParenthesis(char);
 
+export const getLastNumberFromFormulaText = (formulaText) => {
+  let lastNumber = "";
+  if (lastCharIsAnOperation(formulaText)) {
+    lastNumber = getLastChar(formulaText);
+  } else {
+    return lastNumber;
+  }
+
+  for (let i = formulaText.length - 2; i >= 0; i--) {
+    const char = formulaText.charAt(i);
+    if (charIsANumber(char) || charIsAPoint(char)) {
+      lastNumber = char + lastNumber;
+    } else {
+      return lastNumber;
+    }
+  }
+  return lastNumber;
+};
+
 export const getCurrentNumberFromFormulaText = (formulaText) => {
   let currentNumber = "";
   for (let i = formulaText.length - 1; i >= 0; i--) {
@@ -130,7 +149,7 @@ export const handleNumberCode = (code, formulaText) => {
       let currentNumber = getCurrentNumberFromFormulaText(formulaText);
       if (
         isEmpty(formulaText) ||
-        isEmpty(currentNumber) || 
+        isEmpty(currentNumber) ||
         numericStringAlreadyHasAPoint(currentNumber)
       ) {
         throw new CalcException("Invalid position for a point.");

@@ -1,5 +1,7 @@
-export function CalcException(message) {
-    this.message = message;
+export function CalcException(message, displayMessage = "Entrada inválida.") {
+  this.message = message;
+  this.displayMessage = displayMessage;
 
-    this.getMessage = () => this.message;
-};
+  this.getMessage = () => this.message;
+  this.getDisplayMessage = () => this.displayMessage;
+}

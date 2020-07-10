@@ -36,13 +36,13 @@ const Keyboard = ({ handleButtonPress }) => {
         handleButtonPress={handleButtonPress}
         code={OPERATIONS.OPENING_PARENTHESIS}
         type={CODE_TYPES.OPERATION}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={OPERATIONS.CLOSING_PARENTHESIS}
         type={CODE_TYPES.OPERATION}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
@@ -62,19 +62,19 @@ const Keyboard = ({ handleButtonPress }) => {
         handleButtonPress={handleButtonPress}
         code={NUMBERS.SEVEN}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.EIGHT}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.NINE}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
@@ -87,38 +87,38 @@ const Keyboard = ({ handleButtonPress }) => {
         handleButtonPress={handleButtonPress}
         code={NUMBERS.FOUR}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.FIVE}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.SIX}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
 
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.ONE}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.TWO}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.THREE}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
@@ -132,13 +132,13 @@ const Keyboard = ({ handleButtonPress }) => {
         code={NUMBERS.ZERO}
         type={CODE_TYPES.NUMBER}
         isWide
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
       <Button
         handleButtonPress={handleButtonPress}
         code={NUMBERS.POINT}
         type={CODE_TYPES.NUMBER}
-        customClass={styles.darkBlue}
+        customClass={styles.grey}
       />
     </div>
   );

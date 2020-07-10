@@ -3,6 +3,7 @@ import { Display, Keyboard } from "./../index";
 import formulaInterpreter from "./formula/formula-interpreter";
 import {
   getCurrentNumberFromFormulaText,
+  getLastNumberFromFormulaText,
   handleNumberCode,
   handleOperationCode,
   handleCommandCode,
@@ -14,7 +15,9 @@ import KeyboardKeysManager from "./keyboard-keys-manager";
 const Controller = () => {
   const [formulaText, setFormulaText] = useState("");
   const [result, setResult] = useState("");
+  const [error, setError] = useState("");
   const [showResult, setShowResult] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const evaluation = formulaInterpreter(formulaText).evaluate();
@@ -29,6 +32,7 @@ const Controller = () => {
     try {
       let newFormulaText;
       setShowResult(false);
+      setShowError(false);
       switch (type) {
         case CODE_TYPES.NUMBER:
           newFormulaText = handleNumberCode(code, formulaText);
@@ -39,15 +43,20 @@ const Controller = () => {
           setFormulaText(newFormulaText);
           break;
         case CODE_TYPES.COMMAND:
-          newFormulaText = handleCommandCode(code, formulaText);
-          setFormulaText(newFormulaText);
-          if (code === COMMANDS.RESULT) setShowResult(true);
+          try {
+            newFormulaText = handleCommandCode(code, formulaText);
+            setFormulaText(newFormulaText);
+            if (code === COMMANDS.RESULT) setShowResult(true);
+          } catch (exception) {}
+
           break;
         default:
           throw new CalcException("Unknown code type: " + type);
       }
     } catch (exception) {
       console.error(exception.message);
+      setError(exception.displayMessage);
+      setShowError(true);
     }
   };
 
@@ -59,14 +68,14 @@ const Controller = () => {
       <div>
         {console.clear()}
         {console.log("formulaText", formulaText)}
-        {console.log("currentNumber", getCurrentNumberFromFormulaText(formulaText))}
         {console.log("result", result)}
         {console.log("showResult", showResult)}
         <Display
           formula={formulaText}
           result={result}
-          currentNumber={getCurrentNumberFromFormulaText(formulaText)}
+          error={error}
           showResult={showResult}
+          showError={showError}
         />
         <Keyboard handleButtonPress={handleButtonPress} />
       </div>

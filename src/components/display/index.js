@@ -5,11 +5,14 @@ const format = (value) => {
   return value === "" ? 0 : value;
 };
 
-const Display = ({ formula, result, currentNumber, showResult }) => {
+const getClassName = (showError) =>
+  showError ? `${styles.display} ${styles.error}` : styles.display;
+
+const Display = ({ result, formula, error, showResult, showError }) => {
   return (
-    <div className={styles.display}>
+    <div className={getClassName(showError)}>
       <div className={styles.topDisplay}>
-        {showResult ? format(result) : format(currentNumber)}
+        {showError ? "Entrada inválida." : format(result)}
       </div>
       <div className={styles.bottomDisplay}>
         {showResult ? format(result) : format(formula)}
