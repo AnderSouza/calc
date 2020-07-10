@@ -1,8 +1,8 @@
 .emptyButton {
   box-sizing: inherit;
   visibility: hidden;
-  text-align: center;
   line-height: 50px;
+  text-align: center;
 }
 
 .defaultButton {
