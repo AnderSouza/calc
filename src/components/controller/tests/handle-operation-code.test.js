@@ -14,7 +14,7 @@ describe("handleOperationCode function", () => {
     assert.equal(actual, expected);
   });
   it("Adds MULTIPLICATION to the string.", () => {
-    const expected = "25*";
+    const expected = "25x";
     const actual = handleOperationCode(OPERATIONS.MULTIPLICATION, "25");
     assert.equal(actual, expected);
   });
@@ -34,34 +34,34 @@ describe("handleOperationCode function", () => {
     assert.equal(actual, expected);
   });
   it("Adds CLOSING_PARENTHESIS to the string.", () => {
-    const expected = "25+(2*3)";
+    const expected = "25+(2x3)";
     const actual = handleOperationCode(
       OPERATIONS.CLOSING_PARENTHESIS,
-      "25+(2*3"
+      "25+(2x3"
     );
     assert.equal(actual, expected);
   });
   it("Replaces addition with a multiplication.", () => {
-    const expected = "25+(2*3)*";
+    const expected = "25+(2x3)x";
     const actual = handleOperationCode(
       OPERATIONS.MULTIPLICATION,
-      "25+(2*3)+"
+      "25+(2x3)+"
     );
     assert.equal(actual, expected);
   });
   it("Replaces addition with a subtraction.", () => {
-    const expected = "25+(2*3)-";
+    const expected = "25+(2x3)-";
     const actual = handleOperationCode(
       OPERATIONS.SUBTRACTION,
-      "25+(2*3)+"
+      "25+(2x3)+"
     );
     assert.equal(actual, expected);
   });
   it("Replaces division with a addition.", () => {
-    const expected = "25+(2*3)+";
+    const expected = "25+(2x3)+";
     const actual = handleOperationCode(
       OPERATIONS.ADDITION,
-      "25+(2*3)/"
+      "25+(2x3)/"
     );
     assert.equal(actual, expected);
   });
@@ -102,11 +102,11 @@ describe("handleOperationCode function", () => {
     assert.throws(fn, /Cannot insert an opening parenthesis at this position/);
   });
   it("Throws exception when trying to add an opening parenthesis after an opening parenthesis.", () => {
-    const fn = () => handleOperationCode(OPERATIONS.OPENING_PARENTHESIS, "3*(");
+    const fn = () => handleOperationCode(OPERATIONS.OPENING_PARENTHESIS, "3x(");
     assert.throws(fn, /Cannot insert an opening parenthesis at this position/);
   });
   it("Throws exception when trying to add an opening parenthesis after a closing parenthesis.", () => {
-    const fn = () => handleOperationCode(OPERATIONS.OPENING_PARENTHESIS, "3*(5+4)");
+    const fn = () => handleOperationCode(OPERATIONS.OPENING_PARENTHESIS, "3x(5+4)");
     assert.throws(fn, /Cannot insert an opening parenthesis at this position/);
   });
   it("Throws exception when trying to add a closing parenthesis to an empty string.", () => {
@@ -114,7 +114,7 @@ describe("handleOperationCode function", () => {
     assert.throws(fn, /Cannot insert a closing parenthesis at this position/);
   });
   it("Throws exception when trying to add a closing parenthesis after an opening parenthesis.", () => {
-    const fn = () => handleOperationCode(OPERATIONS.CLOSING_PARENTHESIS, "3*(");
+    const fn = () => handleOperationCode(OPERATIONS.CLOSING_PARENTHESIS, "3x(");
     assert.throws(fn, /Cannot insert a closing parenthesis at this position/);
   });
   it("Throws exception when passed a number to the function.", () => {

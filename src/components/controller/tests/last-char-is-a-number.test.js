@@ -19,7 +19,7 @@ describe("lastCharIsANumber function", () => {
   });
   it("Returns true when the last character is a '3'.", () => {
     const expected = true;
-    const actual = lastCharIsANumber("25*87+53");
+    const actual = lastCharIsANumber("25x87+53");
     expect(actual).to.equal(expected);
   });
   it("Returns true when the last character is a '4'.", () => {
@@ -34,7 +34,7 @@ describe("lastCharIsANumber function", () => {
   });
   it("Returns true when the last character is a '6'.", () => {
     const expected = true;
-    const actual = lastCharIsANumber("6*6");
+    const actual = lastCharIsANumber("6x6");
     expect(actual).to.equal(expected);
   });
   it("Returns true when the last character is a '7'.", () => {
@@ -49,17 +49,17 @@ describe("lastCharIsANumber function", () => {
   });
   it("Returns true when the last character is a '9'.", () => {
     const expected = true;
-    const actual = lastCharIsANumber("3*9");
+    const actual = lastCharIsANumber("3x9");
     expect(actual).to.equal(expected);
   });
   it("Returns false when the last character is a parenthesis.", () => {
     const expected = false;
-    const actual = lastCharIsANumber("42-18+(2*3)");
+    const actual = lastCharIsANumber("42-18+(2x3)");
     expect(actual).to.equal(expected);
   });
   it("Returns false when the last character is a plus sign.", () => {
     const expected = false;
-    const actual = lastCharIsANumber("2*3+(4/2)+");
+    const actual = lastCharIsANumber("2x3+(4/2)+");
     expect(actual).to.equal(expected);
   });
 });

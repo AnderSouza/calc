@@ -9,17 +9,17 @@ describe("lastCharIsAOpeningParenthesis function", () => {
   });
   it("Returns false when the last character is a closing parenthesis.", () => {
     const expected = false;
-    const actual = lastCharIsAOpeningParenthesis("25+50+(2*5)");
+    const actual = lastCharIsAOpeningParenthesis("25+50+(2x5)");
     expect(actual).to.equal(expected);
   });
   it("Returns false when the last character is a plus sign.", () => {
     const expected = false;
-    const actual = lastCharIsAOpeningParenthesis("2*3+(4/2)+");
+    const actual = lastCharIsAOpeningParenthesis("2x3+(4/2)+");
     expect(actual).to.equal(expected);
   });
   it("Returns false when the last character is a number.", () => {
     const expected = false;
-    const actual = lastCharIsAOpeningParenthesis("3*3");
+    const actual = lastCharIsAOpeningParenthesis("3x3");
     expect(actual).to.equal(expected);
   });
 });
