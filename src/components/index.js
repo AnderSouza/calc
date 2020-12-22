@@ -1,11 +1,7 @@
-import Controller from "./controller";
+import FormulaTextHandler from "./formula-text-handler";
+import FormulaEvaluator from "./formula-evaluator";
 import Display from "./display";
 import Keyboard from "./keyboard";
 import Wrapper from "./wrapper";
 
-export {
-    Controller,
-    Display, 
-    Keyboard,
-    Wrapper
-};
+export { FormulaTextHandler, FormulaEvaluator, Display, Keyboard, Wrapper };

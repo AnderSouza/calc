@@ -8,20 +8,18 @@ const format = (value) => {
 const getClassName = (showError) =>
   showError ? `${styles.display} ${styles.error}` : styles.display;
 
-const Display = ({ result, formula, error, showResult, showError }) => {
+export default Display = ({ result, formula, error, showResult, showError }) => {
   return (
-    <React.Fragment>
-    <div className={getClassName(showError)}>
-      <div className={styles.topDisplay}>
-        {showError ? "Entrada inválida." : format(result)}
+    <>
+      <div className={getClassName(showError)}>
+        <div className={styles.topDisplay}>
+          {showError ? "Entrada inválida." : format(result)}
+        </div>
+        <div className={styles.bottomDisplay}>
+          {showResult ? format(result) : format(formula)}
+        </div>
       </div>
-      <div className={styles.bottomDisplay}>
-        {showResult ? format(result) : format(formula)}
-      </div>
-    </div>
-    <hr/>
-    </React.Fragment>
+      <hr />
+    </>
   );
 };
-
-export default Display;

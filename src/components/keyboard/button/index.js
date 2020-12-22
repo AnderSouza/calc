@@ -1,19 +1,6 @@
 import React from "react";
 import styles from "./index.module.css";
-import { CODE_TYPES, COMMANDS, NUMBERS, OPERATIONS } from "./../../../consts";
-
-const getChar = (type, code) => {
-  switch(type) {
-    case CODE_TYPES.COMMAND:
-      return COMMANDS.getCommandCharFromCode(code);
-    case CODE_TYPES.OPERATION:
-      return OPERATIONS.getOperationCharFromCode(code);
-    case CODE_TYPES.NUMBER:
-      return NUMBERS.getNumberCharFromCode(code);
-    default:
-      return "";
-  }
-};
+import { Icon } from "./icon";
 
 const getProperStyles = (isWide, isTall, isEmpty) => {
   if (isWide) return styles.wideButton;
@@ -22,12 +9,19 @@ const getProperStyles = (isWide, isTall, isEmpty) => {
   return styles.defaultButton;
 };
 
-const Button = ({ code, type, isWide, isTall, isEmpty, customClass, handleButtonPress }) => (
+const Button = ({
+  code,
+  isWide,
+  isTall,
+  isEmpty,
+  customClass,
+  handleButtonPress,
+}) => (
   <div
-    onClick={() => handleButtonPress(type, code)}
-    className={getProperStyles(isWide, isTall, isEmpty)+" "+customClass}
+    onClick={() => handleButtonPress(code)}
+    className={getProperStyles(isWide, isTall, isEmpty) + " " + customClass}
   >
-    {getChar(type, code)}
+    <Icon code={code} />
   </div>
 );
 
