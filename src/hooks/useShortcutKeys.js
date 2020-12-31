@@ -12,24 +12,13 @@ export default (config, callback) => {
     return pressed;
   };
 
-  const handleKeyDown = (event) => {
-    if (!keyWasAlreadyPressed(pressedKeys, event.key)) {
-      pressedKeys.current = produce(pressedKeys, (draft) => {
-        draft.push(event.key);
-      });
-    }
-    const [found, shortcut] = getMatchingShortcut(config, pressedKeys);
-    if (found) callback(shortcut.id);
-  };
-
-  const handleKeyUp = (event) => {
-    pressedKeys.current = produce(pressedKeys, (draft) =>
-      draft.filter((value) => value.key !== event.key)
-    );
-  };
-
-  getMatchingShortcut = (config, pressedKeys) => {
+  const getMatchingShortcut = (config, pressedKeys) => {
     for (let shortcut of config) {
+      // let keysMatch = pressedKeys.reduce(
+      //   (acc, key) => (acc ? shortcut.keys.includes(key) : false),
+      //   true
+      // );
+
       let keysMatch = shortcut.keys.reduce(
         (acc, key) => (acc ? pressedKeys.includes(key) : false),
         true
@@ -37,6 +26,22 @@ export default (config, callback) => {
       if (keysMatch) return [true, shortcut];
     }
     return [false, null];
+  };
+
+  const handleKeyDown = (event) => {
+    if (!keyWasAlreadyPressed(pressedKeys.current, event.key)) {
+      pressedKeys.current = produce(pressedKeys.current, (draft) => {
+        draft.push(event.key);
+      });
+    }
+    const [found, shortcut] = getMatchingShortcut(config, pressedKeys.current);
+    if (found) callback(shortcut.id);
+  };
+
+  const handleKeyUp = (event) => {
+    pressedKeys.current = produce(pressedKeys.current, (draft) =>
+      draft.filter((value) => value !== event.key)
+    );
   };
 
   return {
