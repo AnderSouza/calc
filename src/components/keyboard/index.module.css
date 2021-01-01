@@ -1,0 +1,32 @@
+.keyboard {
+  padding: 5px;
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 50px 50px 50px 50px 50px 50px;
+  justify-content: space-around;
+  gap: 5px 5px;
+  border-radius: 4px;
+  margin-top: 10px;
+  
+  color: #333333;
+}
+
+.grey {
+  background: white;
+}
+
+.blue {
+  background-color: steelblue;
+  color: white;
+}
+
+.red {
+  background-color: tomato;
+  color: white;
+}
+
+.orange {
+  background-color: darkorange;
+  color: white;
+}

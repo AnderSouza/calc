@@ -1,0 +1,51 @@
+.defaultButton {
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.25em;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.defaultButton:hover {
+  opacity: 1;
+}
+.defaultButton:active {
+  box-shadow: inset 0px 0px 2px black;
+}
+
+.wideButton {
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 50px;
+  font-size: 1.25em;
+  grid-column-end: span 2;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.wideButton:hover {
+  opacity: 1;
+}
+
+.wideButton:active {
+  box-shadow: inset 0px 0px 2px black;
+}
+
+.tallButton {
+  box-sizing: inherit;
+  text-align: center;
+  line-height: 100px;
+  font-size: 1.25em;
+  grid-row: span 2;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.tallButton:hover {
+  opacity: 1;
+}
+
+.tallButton:active {
+  box-shadow: inset 0px 0px 2px black;
+}
