@@ -13,9 +13,6 @@ export default (text: string) => {
   let formulaArray = text.split("");
   let formula = new Formula();
   let trail: number[] = [];
-  console.clear();
-  console.log("formulaArray", formulaArray);
-
   const processChar = (char: string) => {
     switch (char) {
       case EventKeys.ZERO:
@@ -51,6 +48,5 @@ export default (text: string) => {
   };
 
   formulaArray.forEach(processChar);
-  console.log("formula", formula);
   return formula;
 };

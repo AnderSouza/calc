@@ -98,7 +98,6 @@ export class Formula implements Element {
       [Buttons.MULTIPLICATION, Buttons.DIVISION],
       elements
     );
-    console.log("elements", JSON.stringify(elements));
     elements = this.executeOperations(
       [Buttons.ADDITION, Buttons.SUBTRACTION],
       elements
@@ -130,10 +129,6 @@ export class Formula implements Element {
           operator !== undefined &&
           number2 !== undefined
         ) {
-          console.log("a + b => c");
-          console.log("number1", number1);
-          console.log("operator", operator);
-          console.log("number2", number2);
           elements[number1Index] = this.executeOperation(
             number1,
             operator,
@@ -144,7 +139,6 @@ export class Formula implements Element {
 
           // + a => a
         } else if (operator !== undefined && number2 !== undefined) {
-          console.log("+ a => a");
           if (operator.value === Buttons.ADDITION) {
             elements[operatorIndex] = new Number(number2.evaluate());
           } else if (operator.value === Buttons.SUBTRACTION) {
@@ -154,7 +148,6 @@ export class Formula implements Element {
 
           // a + => a
         } else if (number1 !== undefined && operator !== undefined) {
-          console.log("a + => a");
           elements.splice(operatorIndex, 1);
           j--;
         }
