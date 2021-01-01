@@ -1,13 +1,13 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Open Sans', sans-serif;
+@font-face {
+  font-family: "Open Sans";
+  src: url("/assets/fonts/opensans-regular.ttf");
 }
 
-@font-face{
-    font-family: 'Open Sans';
-    src: url('/fonts/opensans-regular.ttf'),
-    url('/fonts/opensans-bold.ttf'),
-    url('/fonts/opensans-italic.ttf')
-    ;
+body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans", sans-serif;
+
+  background: linear-gradient(135deg, #3399cc, #FFBD6C);
 }
