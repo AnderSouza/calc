@@ -3,11 +3,34 @@
   src: url("/assets/fonts/opensans-regular.ttf");
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  font-family: inherit;
+}
+
+html {
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+}
+
 body {
   height: 100vh;
   margin: 0;
-  padding: 0;
-  font-family: "Open Sans", sans-serif;
+  padding: 10px;
+  background: linear-gradient(135deg, #3399cc, #ffbd6c);
+}
 
-  background: linear-gradient(135deg, #3399cc, #FFBD6C);
+.github-logo {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  font-size: 75px;
+  color: #000;
+}
+
+.github-logo:hover {
+  color: #333;
 }

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { FormulaTextHandler } from "./components/index";
 import Wrapper from "./components/wrapper";
+import { GithubLogo } from "./github-logo";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
@@ -10,6 +11,7 @@ ReactDOM.render(
     <Wrapper>
       <FormulaTextHandler />
     </Wrapper>
+    <GithubLogo />
   </React.StrictMode>,
   document.getElementById("root")
 );
