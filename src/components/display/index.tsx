@@ -1,17 +1,17 @@
 import React from "react";
 import styles from "./index.module.css";
 
-const format = (value: string) => (value === "" ? 0 : value);
+const format = (value?: string) => (value === "" ? 0 : value);
 
-const getClassName = (showError: boolean) =>
+const getClassName = (showError?: boolean) =>
   showError ? `${styles.display} ${styles.error}` : styles.display;
 
 type DisplayProps = {
   formula: string;
-  result: string;
-  error: string;
-  showResult: boolean;
-  showError: boolean;
+  result?: string;
+  error?: string;
+  showResult?: boolean;
+  showError?: boolean;
 };
 export default ({
   formula,
@@ -23,12 +23,11 @@ export default ({
   <>
     <div className={getClassName(showError)}>
       <div className={styles.topDisplay}>
-        {showError ? "Entrada inválida." : format(result)}
+        {showError ? "Invalid entry." : format(result)}
       </div>
       <div className={styles.bottomDisplay}>
         {showResult ? format(result) : format(formula)}
       </div>
     </div>
-    <hr />
   </>
 );

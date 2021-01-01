@@ -8,12 +8,12 @@
   gap: 5px 5px;
   border-radius: 4px;
   margin-top: 10px;
-  background-color: rgb(245,245,245);
+  
   color: #333333;
 }
 
 .grey {
-  background: lightgrey;
+  background: white;
 }
 
 .blue {

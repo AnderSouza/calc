@@ -4,6 +4,7 @@ import { Number } from "./number";
 import { Operator } from "./operator";
 import { Buttons, ElementTypes } from "../../consts";
 import { CalcException } from "../../exceptions";
+import { isOperator, isFormula } from "./index.func";
 
 export class Formula implements Element {
   value: Element[];
@@ -38,21 +39,21 @@ export class Formula implements Element {
     this.value = this.value.filter((value, _index) => _index !== index);
   }
 
-  getNumberOfElements() {
+  size() {
     return this.value.length;
   }
 
   isEmpty() {
-    return this.getNumberOfElements() === 0;
+    return this.size() === 0;
   }
 
   getLastElement() {
-    let size = this.getNumberOfElements();
+    const size = this.size();
     return size === 0 ? undefined : this.getElementByIndex(size - 1);
   }
 
   removeLastElement() {
-    let size = this.getNumberOfElements();
+    let size = this.size();
     if (size === 0)
       throw new CalcException(
         "Cannot remove last element because the formula is empty."
@@ -62,7 +63,7 @@ export class Formula implements Element {
   }
 
   replaceLastElement(newElement: Element) {
-    let size = this.getNumberOfElements();
+    let size = this.size();
     if (size === 0)
       throw new CalcException(
         "Cannot replace last element because the formula is empty."
@@ -80,7 +81,7 @@ export class Formula implements Element {
     let element = this.getElementByIndex(trail.shift());
     if (trail.length) {
       trail.forEach((pos) => {
-        if (this.isFormula(element)) element = element.getElementByIndex(pos);
+        if (isFormula(element)) element = element.getElementByIndex(pos);
       });
     }
 
@@ -97,6 +98,7 @@ export class Formula implements Element {
       [Buttons.MULTIPLICATION, Buttons.DIVISION],
       elements
     );
+    console.log("elements", JSON.stringify(elements));
     elements = this.executeOperations(
       [Buttons.ADDITION, Buttons.SUBTRACTION],
       elements
@@ -107,14 +109,6 @@ export class Formula implements Element {
       : 0;
   }
 
-  isOperator = function (element: Element): element is Operator {
-    return element.type === ElementTypes.OPERATION;
-  };
-
-  isFormula(element?: Element): element is Formula {
-    return !!element && element.type === ElementTypes.FORMULA;
-  }
-
   executeOperations(operations: Buttons[], elements: Element[]) {
     let number1, number2, operator;
     let number1Index, number2Index, operatorIndex;
@@ -122,7 +116,7 @@ export class Formula implements Element {
     for (let j = 0; j < elements.length; j++) {
       operatorIndex = j;
       operator = elements[j];
-      if (this.isOperator(operator) && operations.includes(operator.value)) {
+      if (isOperator(operator) && operations.includes(operator.value)) {
         number1Index = j - 1;
         number2Index = j + 1;
         operatorIndex = j;
@@ -136,6 +130,10 @@ export class Formula implements Element {
           operator !== undefined &&
           number2 !== undefined
         ) {
+          console.log("a + b => c");
+          console.log("number1", number1);
+          console.log("operator", operator);
+          console.log("number2", number2);
           elements[number1Index] = this.executeOperation(
             number1,
             operator,
@@ -146,6 +144,7 @@ export class Formula implements Element {
 
           // + a => a
         } else if (operator !== undefined && number2 !== undefined) {
+          console.log("+ a => a");
           if (operator.value === Buttons.ADDITION) {
             elements[operatorIndex] = new Number(number2.evaluate());
           } else if (operator.value === Buttons.SUBTRACTION) {
@@ -155,6 +154,7 @@ export class Formula implements Element {
 
           // a + => a
         } else if (number1 !== undefined && operator !== undefined) {
+          console.log("a + => a");
           elements.splice(operatorIndex, 1);
           j--;
         }
@@ -188,37 +188,36 @@ export class Formula implements Element {
   }
 
   evaluatePotency(base: Element, potency: Element) {
-    const n1 = this.isFormula(base) && base.isEmpty() ? 1 : base.evaluate();
-    const n2 =
-      this.isFormula(potency) && potency.isEmpty() ? 1 : potency.evaluate();
+    const n1 = isFormula(base) && base.isEmpty() ? 1 : base.evaluate();
+    const n2 = isFormula(potency) && potency.isEmpty() ? 1 : potency.evaluate();
 
     return Math.pow(n1, n2);
   }
 
   evaluateMultiplication(x: Element, y: Element) {
-    const n1 = this.isFormula(x) && x.isEmpty() ? 1 : x.evaluate();
-    const n2 = this.isFormula(y) && y.isEmpty() ? 1 : y.evaluate();
+    const n1 = isFormula(x) && x.isEmpty() ? 1 : x.evaluate();
+    const n2 = isFormula(y) && y.isEmpty() ? 1 : y.evaluate();
 
     return n1 * n2;
   }
 
   evaluateDivision(x: Element, y: Element) {
-    const n1 = this.isFormula(x) && x.isEmpty() ? 1 : x.evaluate();
-    const n2 = this.isFormula(y) && y.isEmpty() ? 1 : y.evaluate();
+    const n1 = isFormula(x) && x.isEmpty() ? 1 : x.evaluate();
+    const n2 = isFormula(y) && y.isEmpty() ? 1 : y.evaluate();
 
     return n1 / n2;
   }
 
   evaluateAddition(x: Element, y: Element) {
-    const n1 = this.isFormula(x) && x.isEmpty() ? 0 : x.evaluate();
-    const n2 = this.isFormula(y) && y.isEmpty() ? 0 : y.evaluate();
+    const n1 = isFormula(x) && x.isEmpty() ? 0 : x.evaluate();
+    const n2 = isFormula(y) && y.isEmpty() ? 0 : y.evaluate();
 
     return n1 + n2;
   }
 
   evaluateSubtraction(x: Element, y: Element) {
-    const n1 = this.isFormula(x) && x.isEmpty() ? 0 : x.evaluate();
-    const n2 = this.isFormula(y) && y.isEmpty() ? 0 : y.evaluate();
+    const n1 = isFormula(x) && x.isEmpty() ? 0 : x.evaluate();
+    const n2 = isFormula(y) && y.isEmpty() ? 0 : y.evaluate();
 
     return n1 - n2;
   }

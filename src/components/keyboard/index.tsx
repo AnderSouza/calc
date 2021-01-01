@@ -1,23 +1,27 @@
 import React from "react";
 import styles from "./index.module.css";
 import Button from "./button";
-import { BUTTON_TYPES } from "../../consts";
+import { ButtonTypes } from "../../consts";
 import { ORDERED_BUTTONS } from "./ordered-buttons";
 
-const getClass = (type) => {
+const getClass = (type: number) => {
   switch (type) {
-    case BUTTON_TYPES.NUMBER:
+    case ButtonTypes.NUMBER:
       return styles.grey;
-    case BUTTON_TYPES.OPERATION:
+    case ButtonTypes.OPERATION:
       return styles.blue;
-    case BUTTON_TYPES.COMMAND:
+    case ButtonTypes.COMMAND:
       return styles.orange;
     default:
       return styles.grey;
   }
 };
 
-export default ({ handleButtonPress }) => {
+export default ({
+  handleButtonPress,
+}: {
+  handleButtonPress: (code: number) => void;
+}) => {
   return (
     <div className={styles.keyboard}>
       {ORDERED_BUTTONS.map((button, index) => (
@@ -25,9 +29,8 @@ export default ({ handleButtonPress }) => {
           key={index}
           handleButtonPress={handleButtonPress}
           code={button.code}
-          isTall={button.isTall}
-          isWide={button.isWide}
-          isEmpty={button.isEmpty}
+          isTall={!!button.isTall}
+          isWide={!!button.isWide}
           customClass={getClass(button.type)}
         ></Button>
       ))}

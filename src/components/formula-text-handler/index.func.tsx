@@ -19,7 +19,7 @@ export const charIsNumber = (char: string) => {
   }
 };
 
-export const isOperation = (char: string) => {
+export const charIsAnOperator = (char: string) => {
   switch (char) {
     case EventKeys.ADDITION:
     case EventKeys.SUBTRACTION:
@@ -51,7 +51,7 @@ export const isParenthesis = (char: string) =>
 
 export const getLastNumberFromFormula = (formula: string) => {
   let last = "";
-  if (lastCharIsAnOperation(formula)) {
+  if (lastCharIsAnOperator(formula)) {
     last = getLastChar(formula);
   } else {
     return last;
@@ -117,9 +117,9 @@ export const getPenultimateChar = (text: string) => {
   return text.charAt(penultimatePosition);
 };
 
-export const lastCharIsAnOperation = (text: string) => {
+export const lastCharIsAnOperator = (text: string) => {
   const char = getLastChar(text);
-  return isOperation(char);
+  return charIsAnOperator(char);
 };
 
 export const lastCharIsANumber = (text: string) => {
@@ -178,7 +178,7 @@ export const handleOperationCode = (code: number, formula: string) => {
         throw new CalcException(
           "Cannot insert this operation at this position."
         );
-      } else if (lastCharIsAnOperation(formula)) {
+      } else if (lastCharIsAnOperator(formula)) {
         if (
           formula.length === 1 ||
           penultimateCharIsAnOpeningParenthesis(formula)
@@ -195,7 +195,7 @@ export const handleOperationCode = (code: number, formula: string) => {
       }
     case Buttons.ADDITION:
     case Buttons.SUBTRACTION:
-      if (lastCharIsAnOperation(formula)) {
+      if (lastCharIsAnOperator(formula)) {
         formula = replaceLastChar(formula, char);
         return formula;
       } else {
@@ -215,7 +215,7 @@ export const handleOperationCode = (code: number, formula: string) => {
     case Buttons.CLOSING_PARENTHESIS:
       if (
         isEmpty(formula) ||
-        lastCharIsAnOperation(formula) ||
+        lastCharIsAnOperator(formula) ||
         lastCharIsAnOpeningParenthesis(formula) ||
         !thereAreUnclosedParenthesis(formula)
       ) {

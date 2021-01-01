@@ -8,8 +8,8 @@ import { Element } from "./element";
 import {
   alreadyHasAPoint,
   charIsNumber,
-  isOperation,
   charIsPoint,
+  charIsAnOperator,
 } from "../formula-text-handler/index.func";
 import { CalcException } from "../../exceptions";
 
@@ -20,7 +20,7 @@ export const traverseDown = (trail: number[] = [], formula: Formula) => {
   trail = _.cloneDeep(trail);
   const element = formula.getElement(trail);
   if (isFormula(element)) {
-    const position = element.getNumberOfElements();
+    const position = element.size();
     trail.push(position);
     return trail;
   } else {
@@ -55,14 +55,6 @@ export const processNumber = (
         );
       }
       last.value = +last.value.toString().concat(char);
-      const element = formula.getElement(trail);
-      if (isFormula(element)) {
-        element.replaceLastElement(last);
-      } else {
-        throw new CalcException(
-          `The element fetched through the trail is not a Formula. Trail: ${trail}`
-        );
-      }
     } else {
       if (charIsPoint(char)) {
         throw new CalcException("Cannot start a number with a point.");
@@ -88,7 +80,7 @@ export const processOperation = (
   formula: Formula,
   trail: number[]
 ) => {
-  if (!isOperation(char)) {
+  if (!charIsAnOperator(char)) {
     throw new CalcException("The char is not an operation.");
   }
 
@@ -125,7 +117,7 @@ export const createNestedFormula = (formula: Formula, trail: number[]) => {
 };
 
 export const isNumber = function (element?: Element): element is Number {
-  return !!element && element.type === ElementTypes.OPERATION;
+  return !!element && element.type === ElementTypes.NUMBER;
 };
 
 export const isOperator = function (element?: Element): element is Operator {

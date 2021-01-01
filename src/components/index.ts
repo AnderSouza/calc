@@ -1,5 +1,5 @@
 import FormulaTextHandler from "./formula-text-handler";
-import FormulaEvaluator from "./formula-evaluator";
+import FormulaEvaluator from "./formula-builder";
 import Display from "./display";
 import Keyboard from "./keyboard";
 import Wrapper from "./wrapper";

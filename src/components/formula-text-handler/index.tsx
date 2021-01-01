@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SetStateAction, Dispatch } from "react";
 import { FormulaEvaluator, Display, Keyboard } from "../index";
 import {
   handleNumberCode,
@@ -10,29 +10,22 @@ import { CalcException } from "../../exceptions";
 import useShortcutKeys from "../../hooks/useShortcutKeys";
 import shortcutsConfig from "./shortcuts-config";
 
+type DisplayInfo = {
+  show?: boolean;
+  value?: string;
+};
+
 export default () => {
   const [formulaText, setFormulaText] = useState("");
-  const [result, _setResult] = useState({ show: false, value: "" });
-  const [error, _setError] = useState({ show: false, value: "" });
 
-  const setResult = (obj: { show?: boolean; value?: string }) =>
-    _setResult({ ...result, ...obj });
-  const setError = (obj: { show?: boolean; value?: string }) =>
-    _setError({ ...error, ...obj });
+  const defaultDisplayInfo: DisplayInfo = { show: false, value: "" };
 
-  const { handleKeyUp, handleKeyDown } = useShortcutKeys(
-    shortcutsConfig,
-    handleButtonPress
-  );
+  const [result, _setResult] = useState(defaultDisplayInfo);
+  const [error, _setError] = useState(defaultDisplayInfo);
 
-  useEffect(() => {
-    const evaluation = FormulaEvaluator(formulaText).evaluate();
-    setResult({ value: evaluation });
-  }, [formulaText]);
+  const setResult = (obj: DisplayInfo) => _setResult({ ...result, ...obj });
 
-  useEffect(() => {
-    result.show && setFormulaText(result.value && result.value.toString());
-  }, [result.show]);
+  const setError = (obj: DisplayInfo) => _setError({ ...error, ...obj });
 
   function handleButtonPress(code: number) {
     try {
@@ -78,8 +71,24 @@ export default () => {
     }
   }
 
+  const { handleKeyUp, handleKeyDown } = useShortcutKeys(
+    shortcutsConfig,
+    handleButtonPress
+  );
+
   window.onkeydown = handleKeyDown;
   window.onkeyup = handleKeyUp;
+
+  useEffect(() => {
+    const formula = FormulaEvaluator(formulaText);
+    setResult({ value: formula.evaluate().toString() });
+  }, [formulaText]);
+
+  useEffect(() => {
+    const text = result.value ? result.value.toString() : "";
+    if (result.show) setFormulaText(text);
+  }, [result.show]);
+
   return (
     <div>
       <Display
