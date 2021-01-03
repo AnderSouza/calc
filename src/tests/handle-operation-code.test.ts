@@ -1,55 +1,55 @@
-import { handleOperationCode } from "../src/components/formula-text-handler/index.func";
-import { BUTTONS, EVENT_KEYS } from "../src/consts";
+import { handleOperationCode } from "../components/formula-text-handler/index.func";
+import { Buttons, EventKeys } from "../consts";
 
 describe("handleOperationCode", () => {
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION, EVENT_KEYS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION, EVENT_KEYS.DIVISION],
-    ["subtraction", BUTTONS.SUBTRACTION, EVENT_KEYS.SUBTRACTION],
-    ["addition", BUTTONS.ADDITION, EVENT_KEYS.ADDITION],
-    ["potency", BUTTONS.POTENCY, EVENT_KEYS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION, EventKeys.MULTIPLICATION],
+    ["division", Buttons.DIVISION, EventKeys.DIVISION],
+    ["subtraction", Buttons.SUBTRACTION, EventKeys.SUBTRACTION],
+    ["addition", Buttons.ADDITION, EventKeys.ADDITION],
+    ["potency", Buttons.POTENCY, EventKeys.POTENCY],
   ])("Adds %s to the string.", (name, code, char) => {
     const expected = `25${char}`;
     const actual = handleOperationCode(code, "25");
     expect(actual).toBe(expected);
   });
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION, EVENT_KEYS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION, EVENT_KEYS.DIVISION],
-    ["subtraction", BUTTONS.SUBTRACTION, EVENT_KEYS.SUBTRACTION],
-    ["addition", BUTTONS.ADDITION, EVENT_KEYS.ADDITION],
-    ["potency", BUTTONS.POTENCY, EVENT_KEYS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION, EventKeys.MULTIPLICATION],
+    ["division", Buttons.DIVISION, EventKeys.DIVISION],
+    ["subtraction", Buttons.SUBTRACTION, EventKeys.SUBTRACTION],
+    ["addition", Buttons.ADDITION, EventKeys.ADDITION],
+    ["potency", Buttons.POTENCY, EventKeys.POTENCY],
   ])("Adds an OPENING_PARENTHESIS after a %s.", (name, code, key) => {
     const expected = `25${key}(`;
-    const actual = handleOperationCode(BUTTONS.OPENING_PARENTHESIS, `25${key}`);
+    const actual = handleOperationCode(Buttons.OPENING_PARENTHESIS, `25${key}`);
     expect(actual).toBe(expected);
   });
 
   it.each([
-    ["zero", BUTTONS.ZERO, EVENT_KEYS.ZERO],
-    ["one", BUTTONS.ONE, , EVENT_KEYS.ONE],
-    ["two", BUTTONS.TWO, EVENT_KEYS.TWO],
-    ["three", BUTTONS.THREE, EVENT_KEYS.THREE],
-    ["four", BUTTONS.FOUR, EVENT_KEYS.FOUR],
-    ["five", BUTTONS.FIVE, EVENT_KEYS.FIVE],
-    ["six", BUTTONS.SIX, EVENT_KEYS.SIX],
-    ["seven", BUTTONS.SEVEN, EVENT_KEYS.SEVEN],
-    ["eight", BUTTONS.EIGHT, EVENT_KEYS.EIGHT],
-    ["nine", BUTTONS.NINE, EVENT_KEYS.NINE],
+    ["zero", Buttons.ZERO, EventKeys.ZERO],
+    ["one", Buttons.ONE, EventKeys.ONE],
+    ["two", Buttons.TWO, EventKeys.TWO],
+    ["three", Buttons.THREE, EventKeys.THREE],
+    ["four", Buttons.FOUR, EventKeys.FOUR],
+    ["five", Buttons.FIVE, EventKeys.FIVE],
+    ["six", Buttons.SIX, EventKeys.SIX],
+    ["seven", Buttons.SEVEN, EventKeys.SEVEN],
+    ["eight", Buttons.EIGHT, EventKeys.EIGHT],
+    ["nine", Buttons.NINE, EventKeys.NINE],
   ])("Adds a CLOSING_PARENTHESIS after a %s.", (name, code, char) => {
     const expected = `25+(2x${char})`;
     const actual = handleOperationCode(
-      BUTTONS.CLOSING_PARENTHESIS,
+      Buttons.CLOSING_PARENTHESIS,
       `25+(2x${char}`
     );
     expect(actual).toBe(expected);
   });
 
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION, EVENT_KEYS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION, EVENT_KEYS.DIVISION],
-    ["subtraction", BUTTONS.SUBTRACTION, EVENT_KEYS.SUBTRACTION],
-    ["potency", BUTTONS.POTENCY, EVENT_KEYS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION, EventKeys.MULTIPLICATION],
+    ["division", Buttons.DIVISION, EventKeys.DIVISION],
+    ["subtraction", Buttons.SUBTRACTION, EventKeys.SUBTRACTION],
+    ["potency", Buttons.POTENCY, EventKeys.POTENCY],
   ])("replaces an addition with a %s.", (name, code, char) => {
     const expected = `25+(2x3)${char}`;
     const actual = handleOperationCode(code, "25+(2x3)+");
@@ -57,9 +57,9 @@ describe("handleOperationCode", () => {
   });
 
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION],
-    ["potency", BUTTONS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION],
+    ["division", Buttons.DIVISION],
+    ["potency", Buttons.POTENCY],
   ])(
     "throws an exception when trying to add a %s to an empty string.",
     (name, code) => {
@@ -69,9 +69,9 @@ describe("handleOperationCode", () => {
   );
 
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION],
-    ["potency", BUTTONS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION],
+    ["division", Buttons.DIVISION],
+    ["potency", Buttons.POTENCY],
   ])(
     "throws an exception when trying to add a %s to a string ending in an opening parenthesis.",
     (name, code) => {
@@ -81,26 +81,26 @@ describe("handleOperationCode", () => {
   );
 
   it("throws an exception when trying to replace an addition with a multiplication right after an opening parenthesis.", () => {
-    const fn = () => handleOperationCode(BUTTONS.MULTIPLICATION, "25/(+");
+    const fn = () => handleOperationCode(Buttons.MULTIPLICATION, "25/(+");
     expect(fn).toThrowError(/Cannot insert this operation at this position/);
   });
 
   it("throws an exception when trying to add an opening parenthesis to an empty string.", () => {
-    const fn = () => handleOperationCode(BUTTONS.OPENING_PARENTHESIS, "");
+    const fn = () => handleOperationCode(Buttons.OPENING_PARENTHESIS, "");
     expect(fn).toThrowError(
       /Cannot insert an opening parenthesis at this position/
     );
   });
 
   it("throws an exception when trying to add an opening parenthesis after a number.", () => {
-    const fn = () => handleOperationCode(BUTTONS.OPENING_PARENTHESIS, "2+5");
+    const fn = () => handleOperationCode(Buttons.OPENING_PARENTHESIS, "2+5");
     expect(fn).toThrowError(
       /Cannot insert an opening parenthesis at this position/
     );
   });
 
   it("throws an exception when trying to add an opening parenthesis after an opening parenthesis.", () => {
-    const fn = () => handleOperationCode(BUTTONS.OPENING_PARENTHESIS, "3x(");
+    const fn = () => handleOperationCode(Buttons.OPENING_PARENTHESIS, "3x(");
     expect(fn).toThrowError(
       /Cannot insert an opening parenthesis at this position/
     );
@@ -108,21 +108,21 @@ describe("handleOperationCode", () => {
 
   it("throws an exception when trying to add an opening parenthesis after a closing parenthesis.", () => {
     const fn = () =>
-      handleOperationCode(BUTTONS.OPENING_PARENTHESIS, "3x(5+4)");
+      handleOperationCode(Buttons.OPENING_PARENTHESIS, "3x(5+4)");
     expect(fn).toThrowError(
       /Cannot insert an opening parenthesis at this position/
     );
   });
 
   it("throws an exception when trying to add a closing parenthesis to an empty string.", () => {
-    const fn = () => handleOperationCode(BUTTONS.CLOSING_PARENTHESIS, "");
+    const fn = () => handleOperationCode(Buttons.CLOSING_PARENTHESIS, "");
     expect(fn).toThrowError(
       /Cannot insert a closing parenthesis at this position/
     );
   });
 
   it("throws an exception when trying to add a closing parenthesis after an opening parenthesis.", () => {
-    const fn = () => handleOperationCode(BUTTONS.CLOSING_PARENTHESIS, "3x(");
+    const fn = () => handleOperationCode(Buttons.CLOSING_PARENTHESIS, "3x(");
     expect(fn).toThrowError(
       /Cannot insert a closing parenthesis at this position/
     );
@@ -130,20 +130,20 @@ describe("handleOperationCode", () => {
 
   it.each([
     [
-      ["zero", BUTTONS.ZERO],
-      ["one", BUTTONS.ONE],
-      ["two", BUTTONS.TWO],
-      ["three", BUTTONS.THREE],
-      ["four", BUTTONS.FOUR],
-      ["five", BUTTONS.FIVE],
-      ["six", BUTTONS.SIX],
-      ["seven", BUTTONS.SEVEN],
-      ["eight", BUTTONS.EIGHT],
-      ["nine", BUTTONS.NINE],
-      ["point", BUTTONS.POINT],
+      ["zero", Buttons.ZERO],
+      ["one", Buttons.ONE],
+      ["two", Buttons.TWO],
+      ["three", Buttons.THREE],
+      ["four", Buttons.FOUR],
+      ["five", Buttons.FIVE],
+      ["six", Buttons.SIX],
+      ["seven", Buttons.SEVEN],
+      ["eight", Buttons.EIGHT],
+      ["nine", Buttons.NINE],
+      ["point", Buttons.POINT],
     ],
   ])("throws an exception when passed a %s to the function.", (code) => {
-    const fn = () => handleOperationCode(BUTTONS.ONE, "");
+    const fn = () => handleOperationCode(Buttons.ONE, "");
     expect(fn).toThrowError(/Unknown operation code/);
   });
 });

@@ -1,4 +1,4 @@
-import { alreadyHasAPoint } from "../src/components/formula-text-handler/index.func";
+import { alreadyHasAPoint } from "../components/formula-text-handler/index.func";
 
 describe("alreadyHasAPoint", () => {
   it("returns true when passed a number with one point in the middle.", () => {

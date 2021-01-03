@@ -1,5 +1,5 @@
-import { getCurrentNumberFromFormula } from "../src/components/formula-text-handler/index.func";
-import { BUTTONS, EVENT_KEYS } from "../src/consts/index";
+import { getCurrentNumberFromFormula } from "../components/formula-text-handler/index.func";
+import { Buttons, EventKeys } from "../consts/index";
 
 describe("getCurrentNumberFromFormula", () => {
   it("returns the number when passed it", () => {
@@ -13,11 +13,11 @@ describe("getCurrentNumberFromFormula", () => {
     expect(actual).toBe(expected);
   });
   it.each([
-    ["multiplication", BUTTONS.MULTIPLICATION, EVENT_KEYS.MULTIPLICATION],
-    ["division", BUTTONS.DIVISION, EVENT_KEYS.DIVISION],
-    ["subtraction", BUTTONS.SUBTRACTION, EVENT_KEYS.SUBTRACTION],
-    ["addition", BUTTONS.ADDITION, EVENT_KEYS.ADDITION],
-    ["potency", BUTTONS.POTENCY, EVENT_KEYS.POTENCY],
+    ["multiplication", Buttons.MULTIPLICATION, EventKeys.MULTIPLICATION],
+    ["division", Buttons.DIVISION, EventKeys.DIVISION],
+    ["subtraction", Buttons.SUBTRACTION, EventKeys.SUBTRACTION],
+    ["addition", Buttons.ADDITION, EventKeys.ADDITION],
+    ["potency", Buttons.POTENCY, EventKeys.POTENCY],
   ])(`returns nothing when the last char is %s`, (name, code, key) => {
     const expected = "";
     const actual = getCurrentNumberFromFormula(`315-125${key}`);

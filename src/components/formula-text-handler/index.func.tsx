@@ -81,10 +81,9 @@ export const getCurrentNumberFromFormula = (formula: string) => {
   return number;
 };
 
-export const alreadyHasAPoint = (number: number) => {
-  const numericString = number.toString();
-  for (let i = 0; i < numericString.length; i++) {
-    if (numericString.charAt(i) === EventKeys.POINT) return true;
+export const alreadyHasAPoint = (number: string) => {
+  for (let i = 0; i < number.length; i++) {
+    if (number.charAt(i) === EventKeys.POINT) return true;
   }
   return false;
 };
@@ -148,7 +147,7 @@ export const handleNumberCode = (code: number, formula: string) => {
   switch (code) {
     case Buttons.POINT:
       let number = getCurrentNumberFromFormula(formula);
-      if (isEmpty(formula) || isEmpty(number) || alreadyHasAPoint(+number)) {
+      if (isEmpty(formula) || isEmpty(number) || alreadyHasAPoint(number)) {
         throw new CalcException("Invalid position for a point.");
       }
     case Buttons.ZERO:

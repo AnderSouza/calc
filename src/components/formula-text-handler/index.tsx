@@ -67,7 +67,7 @@ export default () => {
           throw new CalcException("Unknown code type: " + type);
       }
     } catch (exception) {
-      setError({ value: exception.message, show: true });
+      setError({ value: (exception as CalcException).message, show: true });
     }
   }
 

@@ -10,7 +10,7 @@ export class Formula implements Element {
   value: Element[];
   type: ElementTypes;
 
-  constructor(value = []) {
+  constructor(value: Element[] = []) {
     this.value = value;
     this.type = ElementTypes.FORMULA;
   }
@@ -140,9 +140,11 @@ export class Formula implements Element {
           // + a => a
         } else if (operator !== undefined && number2 !== undefined) {
           if (operator.value === Buttons.ADDITION) {
-            elements[operatorIndex] = new Number(number2.evaluate());
+            elements[operatorIndex] = new Number(number2.evaluate().toString());
           } else if (operator.value === Buttons.SUBTRACTION) {
-            elements[operatorIndex] = new Number(-number2.evaluate());
+            elements[operatorIndex] = new Number(
+              (-number2.evaluate()).toString()
+            );
           }
           elements.splice(number2Index, 1);
 
@@ -162,19 +164,19 @@ export class Formula implements Element {
     switch (op.value) {
       case Buttons.POTENCY:
         result = this.evaluatePotency(n1, n2);
-        return new Number(+result.toFixed(2));
+        return new Number(result.toFixed(2));
       case Buttons.MULTIPLICATION:
         result = this.evaluateMultiplication(n1, n2);
-        return new Number(+result.toFixed(2));
+        return new Number(result.toFixed(2));
       case Buttons.DIVISION:
         result = this.evaluateDivision(n1, n2);
-        return new Number(+result.toFixed(2));
+        return new Number(result.toFixed(2));
       case Buttons.ADDITION:
         result = this.evaluateAddition(n1, n2);
-        return new Number(+result.toFixed(2));
+        return new Number(result.toFixed(2));
       case Buttons.SUBTRACTION:
         result = this.evaluateSubtraction(n1, n2);
-        return new Number(+result.toFixed(2));
+        return new Number(result.toFixed(2));
       default:
         throw new CalcException("Unknown operation.");
     }
