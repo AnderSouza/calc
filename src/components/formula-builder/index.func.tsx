@@ -54,12 +54,12 @@ export const processNumber = (
           "Cannot insert point because the number already has one."
         );
       }
-      last.value = +last.value.toString().concat(char);
+      last.value = last.value.toString().concat(char);
     } else {
       if (charIsPoint(char)) {
         throw new CalcException("Cannot start a number with a point.");
       }
-      const number = new Number(+char);
+      const number = new Number(char);
       const element = formula.getElement(trail);
       if (isFormula(element)) {
         element.addElement(number);

@@ -1,4 +1,4 @@
-import { traverseUp } from "../src/components/formula-evaluator/index.func";
+import { traverseUp } from "../components/formula-builder/index.func";
 
 describe("traverseUp function", () => {
   it("Remove last position from trail.", () => {
@@ -8,7 +8,7 @@ describe("traverseUp function", () => {
     expect(actual).toEqual(expected);
   });
   it("Throws exception when passed trail is empty.", () => {
-    const trail = [];
+    const trail: number[] = [];
     const fn = () => traverseUp(trail);
     expect(fn).toThrowError(/trail is empty/);
   });
